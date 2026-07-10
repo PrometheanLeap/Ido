@@ -1,0 +1,22 @@
+---
+name: Feature request
+about: Suggest a feature for Ido
+title: "[feature] "
+labels: enhancement
+---
+
+## Feature description
+
+A clear description of what you want to happen.
+
+## Use case
+
+Why is this feature needed? What problem does it solve?
+
+## Proposed solution
+
+How do you think this should work? (Optional — if you're not sure, just describe the use case.)
+
+## Alternatives considered
+
+Any alternative approaches you've considered.

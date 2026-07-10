@@ -1,0 +1,21 @@
+{
+  "surface_type": "approval",
+  "surface_title": "Approval with Reason Required",
+  "context": "Approve or reject this change request. A reason is required for rejection.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "reason": { "type": "string", "title": "Reason" }
+    }
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Change Request Approval" }, "children": ["detail"] },
+    { "id": "detail", "component": "RichText", "props": { "markdown": "**Change**: Update firewall rules for production\n**Risk**: Low\n**Rollback**: Immediate if issues detected" }, "parent": "card" }
+  ],
+  "action_validation": {
+    "approve": {},
+    "reject": {
+      "required_fields": ["reason"]
+    }
+  }
+}

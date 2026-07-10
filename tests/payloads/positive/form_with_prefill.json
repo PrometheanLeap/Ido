@@ -1,0 +1,1 @@
+{"surface_type":"form","surface_title":"Pre-filled Form","initial_data_model":{"name":"John","age":30},"inputs_schema":{"type":"object","properties":{"name":{"type":"string","title":"Name"},"age":{"type":"number","title":"Age"}}}}

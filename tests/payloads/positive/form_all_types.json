@@ -1,0 +1,16 @@
+{
+  "surface_type": "form",
+  "surface_title": "All Input Types",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "text_field": { "type": "string", "title": "Text" },
+      "number_field": { "type": "number", "title": "Number" },
+      "bool_field": { "type": "boolean", "title": "Toggle" },
+      "enum_field": { "type": "string", "title": "Select", "enum": ["A", "B", "C"] },
+      "date_field": { "type": "string", "title": "Date", "format": "date" },
+      "time_field": { "type": "string", "title": "Time", "format": "time" }
+    },
+    "required": ["text_field"]
+  }
+}

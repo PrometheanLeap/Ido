@@ -1,0 +1,26 @@
+Business Source License 1.1
+
+License text copyright (c) 2017 MariaDB Corporation Ab, All Rights Reserved.
+"Business Source License" is a trademark of MariaDB Corporation Ab.
+
+Parameters
+
+Licensor: Andrew Herbert
+
+Licensed Work: Ido — AI-to-Human Interaction Gateway
+The Licensed Work is (c) 2026 Andrew Herbert
+
+Additional Use Grant: You may use the Licensed Work for non-production
+purposes, including development, testing, and personal use, without
+restriction. Production use is permitted only under the following modes:
+- IDO_MODE=dev
+- IDO_MODE=personal
+
+Production use in IDO_MODE=saas or IDO_MODE=corporate requires a separate
+commercial license agreement with the Licensor.
+
+Change Date: 2030-07-03
+
+Change License: MIT License
+
+For information about commercial licensing, contact the Licensor.

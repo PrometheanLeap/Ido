@@ -1,0 +1,13 @@
+{
+  "surface_type": "notification",
+  "surface_title": "Market Alert — BTC Volatility",
+  "context": "Bitcoin volatility spike detected. 15% price movement in the last hour.",
+  "severity": "warning",
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Market Alert" }, "children": ["badge-row", "body"] },
+    { "id": "badge-row", "component": "Row", "props": { "gap": 8 }, "parent": "card", "children": ["sev", "action"] },
+    { "id": "sev", "component": "Badge", "props": { "text": "Volatility", "color": "#F59E0B", "variant": "solid" }, "parent": "badge-row" },
+    { "id": "action", "component": "Badge", "props": { "text": "Review Required", "color": "#EF4444", "variant": "outline" }, "parent": "badge-row" },
+    { "id": "body", "component": "RichText", "props": { "markdown": "BTC moved 15% in the last hour. Trading volume: $2.4B. Consider risk review." }, "parent": "card" }
+  ]
+}

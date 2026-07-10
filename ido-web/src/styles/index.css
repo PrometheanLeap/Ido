@@ -1,0 +1,312 @@
+@import "tailwindcss";
+
+/* ── Border-radius scale ──────────────────────────────────────
+   Use Tailwind classes mapped to these tokens:
+   • rounded-md   (8px)  — inputs, small buttons, badges
+   • rounded-lg  (12px)  — cards, medium buttons
+   • rounded-xl  (16px)  — primary CTAs, modals
+   • rounded-2xl (20px)  — large sheets, confirmation modals
+   • rounded-full        — pills, avatars, circular buttons
+   Avoid mixing arbitrary radii (e.g. rounded-2xl on a small button).
+*/
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Ido Blue — clean, professional */
+  --color-base: #E8ECF1;
+  --color-surface: #FFFFFF;
+  --color-border: #D8DCE3;
+  --color-primary: #2563EB;
+  --color-primary-glow: #3B82F6;
+  --color-secondary: #6B7280;
+  --color-text: #1B1F23;
+
+  --color-accent-form: #2563EB;
+  --color-accent-approval: #059669;
+  --color-accent-notification: #EA580C;
+  --color-accent-info: #3B82F6;
+  --color-accent-success: #10B981;
+  --color-accent-warning: #F59E0B;
+  --color-accent-error: #EF4444;
+  --color-accent-critical: #DC2626;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+
+  --text-display: 20px;
+  --text-heading: 16px;
+  --text-body: 14px;
+  --text-caption: 12px;
+  --text-label: 11px;
+
+  /* Layered elevation shadows for depth */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 2px 8px rgba(15, 23, 42, 0.08), 0 4px 16px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--color-primary) 20%, transparent), 0 4px 20px color-mix(in srgb, var(--color-primary) 18%, transparent);
+}
+
+/* Dark mode tokens */
+.dark {
+  --color-base: #0D1117;
+  --color-surface: #161B22;
+  --color-border: #30363D;
+  --color-primary: #58A6FF;
+  --color-primary-glow: #79C0FF;
+  --color-secondary: #8B949E;
+  --color-text: #E6EDF3;
+
+  --color-accent-form: #58A6FF;
+  --color-accent-approval: #3FB950;
+  --color-accent-notification: #D29922;
+  --color-accent-info: #58A6FF;
+  --color-accent-success: #3FB950;
+  --color-accent-warning: #D29922;
+  --color-accent-error: #F85149;
+  --color-accent-critical: #DA3633;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 28px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--color-primary) 30%, transparent), 0 4px 24px color-mix(in srgb, var(--color-primary) 22%, transparent);
+}
+
+/* ── Spring curve — reuse for all bouncy transitions ──────── */
+:root {
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Gradient text (logo / hero accents) ───────────────────── */
+.text-gradient {
+  background: linear-gradient(120deg, var(--color-primary), var(--color-primary-glow));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ── Primary gradient button surface ───────────────────────── */
+.btn-gradient {
+  background: linear-gradient(135deg, var(--color-primary), color-mix(in srgb, var(--color-primary) 82%, #7C3AED));
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 200ms ease-out, transform 200ms var(--ease-spring);
+}
+.btn-gradient:hover:not(:disabled) {
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-1px);
+}
+
+/* ── Micro-bounce on press ─────────────────────────────────── */
+@keyframes micro-bounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.94); }
+  70%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.micro-bounce:active:not(:disabled) {
+  animation: micro-bounce 250ms var(--ease-spring);
+}
+
+/* ── Tactile press (iOS-style scale-down) ──────────────────── */
+/* Instant, satisfying press feedback for buttons and tappable rows. */
+.press {
+  transition: transform 140ms var(--ease-spring), box-shadow 140ms ease-out, filter 140ms ease-out;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.press:active:not(:disabled) {
+  transform: scale(0.955);
+  filter: brightness(0.97);
+}
+.press-sm {
+  transition: transform 140ms var(--ease-spring);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.press-sm:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* ── Segmented control (settings / toggles) ────────────────── */
+.segmented {
+  position: relative;
+  display: flex;
+  padding: 3px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-secondary) 12%, transparent);
+  isolation: isolate;
+}
+.segmented-thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  border-radius: 8px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform 260ms var(--ease-spring), width 260ms var(--ease-spring);
+  z-index: 0;
+}
+.segmented-item {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 10px;
+  font-size: var(--text-caption);
+  font-weight: 500;
+  color: var(--color-secondary);
+  border-radius: 8px;
+  transition: color 200ms ease-out;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.segmented-item[data-active="true"] {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ── Card hover lift ───────────────────────────────────────── */
+.card-lift {
+  transition: transform 200ms var(--ease-spring), box-shadow 200ms ease-out, border-color 200ms ease-out;
+}
+.card-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
+}
+
+/* ── New-surface arrival glow + slide-down ────────────────── */
+@keyframes card-arrive {
+  0%   { transform: translateY(-12px); opacity: 0; background-color: color-mix(in srgb, var(--color-primary) 10%, transparent); box-shadow: var(--shadow-glow); }
+  15%  { transform: translateY(0); opacity: 1; }
+  100% { background-color: transparent; box-shadow: none; }
+}
+.animate-card-arrive {
+  animation: card-arrive 2.5s ease-out;
+}
+
+/* ── Shimmer skeleton loading ──────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-border) 40%, transparent) 25%,
+    color-mix(in srgb, var(--color-border) 70%, transparent) 50%,
+    color-mix(in srgb, var(--color-border) 40%, transparent) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* ── Soft pulse for live indicators ────────────────────────── */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent-success) 50%, transparent); }
+  50%      { opacity: 0.85; box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent-success) 0%, transparent); }
+}
+.live-dot {
+  animation: live-pulse 2s ease-in-out infinite;
+}
+
+/* ── Existing animations ───────────────────────────────────── */
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.95); }
+}
+
+.animate-slide-up {
+  animation: slide-up 200ms ease-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 150ms ease-out;
+}
+
+.animate-fade-out {
+  animation: fade-out 400ms ease-in forwards;
+}
+
+/* ── Reduced motion ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .micro-bounce:active,
+  .animate-slide-up,
+  .animate-fade-in,
+  .animate-fade-out,
+  .animate-card-arrive,
+  .skeleton,
+  .live-dot {
+    animation: none !important;
+  }
+  .card-lift,
+  .card-lift:hover,
+  .press,
+  .press:active,
+  .press-sm,
+  .press-sm:active {
+    transition: none;
+    transform: none;
+    box-shadow: none;
+    filter: none;
+  }
+  .segmented-thumb { transition: none; }
+}
+
+/* Base styles */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100dvh;
+  color: var(--color-text);
+  background:
+    radial-gradient(1200px 600px at 100% -10%, color-mix(in srgb, var(--color-primary) 6%, transparent), transparent 60%),
+    radial-gradient(1000px 500px at -10% 110%, color-mix(in srgb, var(--color-accent-approval) 5%, transparent), transparent 55%),
+    var(--color-base);
+  background-attachment: fixed;
+}
+
+/* Native date/time inputs — visible in dark mode */
+.dark input[type="date"],
+.dark input[type="time"],
+.dark input[type="datetime-local"] {
+  color-scheme: dark;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-secondary); border-radius: 3px; }
+
+/* Selection */
+::selection {
+  background-color: var(--color-primary);
+  color: white;
+}

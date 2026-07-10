@@ -1,0 +1,36 @@
+{
+  "surface_type": "form",
+  "surface_title": "All Input Types Demo",
+  "context": "This form demonstrates every input component type.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "text_field": { "type": "string", "title": "Text Input" },
+      "email_field": { "type": "string", "title": "Email" },
+      "number_field": { "type": "number", "title": "Number" },
+      "select_field": { "type": "string", "title": "Select", "enum": ["Option A", "Option B", "Option C"] },
+      "choice_field": { "type": "string", "title": "Choice", "enum": ["Choice 1", "Choice 2", "Choice 3"] },
+      "checkbox_field": { "type": "boolean", "title": "I agree" },
+      "date_field": { "type": "string", "title": "Date" },
+      "time_field": { "type": "string", "title": "Time" },
+      "rating_field": { "type": "number", "title": "Rating" },
+      "slider_field": { "type": "number", "title": "Slider" },
+      "long_text": { "type": "string", "title": "Long Text" }
+    }
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "All Input Types" }, "children": ["form-root"] },
+    { "id": "form-root", "component": "Form", "props": { "submitLabel": "Submit All" }, "parent": "card", "children": ["text", "email", "num", "sel", "choice", "check", "date", "time", "rating", "slider", "long"] },
+    { "id": "text", "component": "InputField", "props": { "label": "Text Input", "type": "text" }, "bind": "text_field", "parent": "form-root" },
+    { "id": "email", "component": "InputField", "props": { "label": "Email", "type": "email" }, "bind": "email_field", "parent": "form-root" },
+    { "id": "num", "component": "InputField", "props": { "label": "Number", "type": "number", "min": 0, "max": 100 }, "bind": "number_field", "parent": "form-root" },
+    { "id": "sel", "component": "Select", "props": { "label": "Select", "options": [{"label": "Option A", "value": "Option A"}, {"label": "Option B", "value": "Option B"}, {"label": "Option C", "value": "Option C"}] }, "bind": "select_field", "parent": "form-root" },
+    { "id": "choice", "component": "ChoicePicker", "props": { "label": "Choice Picker", "options": [{"label": "Choice 1", "value": "Choice 1"}, {"label": "Choice 2", "value": "Choice 2"}, {"label": "Choice 3", "value": "Choice 3"}] }, "bind": "choice_field", "parent": "form-root" },
+    { "id": "check", "component": "Checkbox", "props": { "label": "I agree to the terms" }, "bind": "checkbox_field", "parent": "form-root" },
+    { "id": "date", "component": "DatePicker", "props": { "label": "Date" }, "bind": "date_field", "parent": "form-root" },
+    { "id": "time", "component": "InputField", "props": { "label": "Time", "type": "time" }, "bind": "time_field", "parent": "form-root" },
+    { "id": "rating", "component": "Rating", "props": { "label": "Rating", "max": 5 }, "bind": "rating_field", "parent": "form-root" },
+    { "id": "slider", "component": "Slider", "props": { "label": "Slider", "min": 0, "max": 100 }, "bind": "slider_field", "parent": "form-root" },
+    { "id": "long", "component": "TextField", "props": { "label": "Long Text", "rows": 4 }, "bind": "long_text", "parent": "form-root" }
+  ]
+}

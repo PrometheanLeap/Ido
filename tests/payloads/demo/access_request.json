@@ -1,0 +1,77 @@
+{
+  "surface_type": "form",
+  "surface_title": "Server Access Request",
+  "context": "Request access to production infrastructure. All fields are reviewed by the DevOps team.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "full_name": { "type": "string", "title": "Full Name" },
+      "email": { "type": "string", "title": "Work Email" },
+      "team": { "type": "string", "title": "Team" },
+      "manager": { "type": "string", "title": "Manager" },
+      "access_type": { "type": "string", "title": "Access Type" },
+      "environment": { "type": "string", "title": "Environment" },
+      "duration": { "type": "string", "title": "Duration" },
+      "reason": { "type": "string", "title": "Business Justification" },
+      "resources": { "type": "string", "title": "Specific Resources" },
+      "emergency": { "type": "boolean", "title": "Emergency Access" },
+      "ack_policy": { "type": "boolean", "title": "Acknowledge Policy" }
+    },
+    "required": ["full_name", "email", "team", "access_type", "environment", "reason", "ack_policy"]
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Server Access Request", "subtitle": "DevOps will review within 4 business hours" }, "children": ["form-root"] },
+
+    { "id": "form-root", "component": "Form", "props": { "submitLabel": "Submit Request" }, "parent": "card", "children": ["row-name-email", "row-team-mgr", "divider1", "row-access-env", "select-duration", "field-reason", "field-resources", "divider2", "check-emergency", "emergency-warning", "check-policy"] },
+
+    { "id": "row-name-email", "component": "Row", "props": { "gap": 8, "maxColumns": 2 }, "parent": "form-root", "children": ["field-name", "field-email"] },
+    { "id": "field-name", "component": "InputField", "props": { "label": "Full Name", "type": "text", "required": true }, "bind": "full_name", "parent": "row-name-email" },
+    { "id": "field-email", "component": "InputField", "props": { "label": "Work Email", "type": "email", "placeholder": "you@company.com", "required": true }, "bind": "email", "parent": "row-name-email" },
+
+    { "id": "row-team-mgr", "component": "Row", "props": { "gap": 8, "maxColumns": 2 }, "parent": "form-root", "children": ["select-team", "field-manager"] },
+    { "id": "select-team", "component": "Select", "props": { "label": "Team", "options": [
+      { "label": "Engineering", "value": "eng" },
+      { "label": "DevOps / SRE", "value": "devops" },
+      { "label": "Data / ML", "value": "data" },
+      { "label": "Security", "value": "security" },
+      { "label": "Product", "value": "product" },
+      { "label": "Other", "value": "other" }
+    ] }, "bind": "team", "parent": "row-team-mgr" },
+    { "id": "field-manager", "component": "InputField", "props": { "label": "Manager (for approval)", "type": "text", "placeholder": "manager@company.com" }, "bind": "manager", "parent": "row-team-mgr" },
+
+    { "id": "divider1", "component": "Divider", "props": { "label": "Access Details" }, "parent": "form-root" },
+
+    { "id": "row-access-env", "component": "Row", "props": { "gap": 8, "maxColumns": 2 }, "parent": "form-root", "children": ["choice-access", "choice-env"] },
+    { "id": "choice-access", "component": "ChoicePicker", "props": { "label": "Access Type", "options": [
+      { "label": "SSH", "value": "ssh" },
+      { "label": "Database", "value": "db" },
+      { "label": "AWS Console", "value": "aws" },
+      { "label": "Kubernetes", "value": "k8s" },
+      { "label": "VPN", "value": "vpn" }
+    ], "variant": "chips", "required": true }, "bind": "access_type", "parent": "row-access-env" },
+    { "id": "choice-env", "component": "Select", "props": { "label": "Environment", "options": [
+      { "label": "Production", "value": "prod" },
+      { "label": "Staging", "value": "staging" },
+      { "label": "Development", "value": "dev" },
+      { "label": "All", "value": "all" }
+    ] }, "bind": "environment", "parent": "row-access-env" },
+
+    { "id": "select-duration", "component": "Select", "props": { "label": "Duration", "options": [
+      { "label": "24 hours", "value": "24h" },
+      { "label": "7 days", "value": "7d" },
+      { "label": "30 days", "value": "30d" },
+      { "label": "90 days", "value": "90d" },
+      { "label": "Permanent", "value": "permanent" }
+    ] }, "bind": "duration", "parent": "form-root" },
+
+    { "id": "field-reason", "component": "TextField", "props": { "label": "Business Justification", "placeholder": "Why do you need this access? Be specific...", "rows": 3, "required": true }, "bind": "reason", "parent": "form-root" },
+    { "id": "field-resources", "component": "TextField", "props": { "label": "Specific Resources", "placeholder": "e.g. prod-db-primary, k8s cluster 'prod-east', S3 bucket 'ido-backups'", "rows": 2 }, "bind": "resources", "parent": "form-root" },
+
+    { "id": "divider2", "component": "Divider", "props": { "label": "Acknowledgements" }, "parent": "form-root" },
+
+    { "id": "check-emergency", "component": "Checkbox", "props": { "label": "This is an emergency access request (expedited review)" }, "bind": "emergency", "parent": "form-root" },
+    { "id": "emergency-warning", "component": "RichText", "props": { "markdown": "⚠️ **Emergency requests** require on-call DevOps approval. You will be contacted via PagerDuty." }, "parent": "form-root", "visible": { "when": "emergency", "operator": "equals", "value": true } },
+
+    { "id": "check-policy", "component": "Checkbox", "props": { "label": "I acknowledge the company data access policy and accept responsibility for all actions taken with this access.", "required": true }, "bind": "ack_policy", "parent": "form-root" }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "surface_type": "notification",
+  "surface_title": "Weekly Summary",
+  "context": "Your weekly activity summary is ready.",
+  "severity": "info",
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Weekly Summary" }, "children": ["badge-row", "body"] },
+    { "id": "badge-row", "component": "Row", "props": { "gap": 8 }, "parent": "card", "children": ["task-badge", "review-badge", "alert-badge"] },
+    { "id": "task-badge", "component": "Badge", "props": { "text": "12 Tasks", "color": "#3B82F6", "variant": "solid" }, "parent": "badge-row" },
+    { "id": "review-badge", "component": "Badge", "props": { "text": "3 Reviews", "color": "#10B981", "variant": "outline" }, "parent": "badge-row" },
+    { "id": "alert-badge", "component": "Badge", "props": { "text": "0 Alerts", "color": "#64748B", "variant": "subtle" }, "parent": "badge-row" },
+    { "id": "body", "component": "RichText", "props": { "markdown": "### This Week\n- ✅ 12 tasks completed\n- 📝 3 code reviews submitted\n- 🚀 2 deployments\n- 🐛 5 bugs fixed\n\nSee the [full report](https://example.com/report) for details." }, "parent": "card" }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "surface_type": "form",
+  "surface_title": "Complete Component Showcase",
+  "context": "This form demonstrates every A2UI component available. Open it to see all 37 components rendered.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "full_name": { "type": "string", "title": "Full Name" },
+      "email": { "type": "string", "title": "Email Address" },
+      "department": { "type": "string", "title": "Department", "enum": ["Engineering", "Design", "Product", "Sales"] },
+      "priority": { "type": "string", "title": "Priority", "enum": ["Low", "Medium", "High", "Critical"] },
+      "agree_terms": { "type": "boolean", "title": "I agree to the terms" },
+      "start_date": { "type": "string", "title": "Start Date" },
+      "satisfaction": { "type": "number", "title": "Satisfaction" },
+      "budget_pct": { "type": "number", "title": "Budget %" },
+      "notes": { "type": "string", "title": "Additional Notes" },
+      "signature": { "type": "string", "title": "Signature" },
+      "notify_channels": { "type": "string", "title": "Notify via" },
+      "has_budget": { "type": "boolean", "title": "Has budget approval?" },
+      "budget_amount": { "type": "number", "title": "Budget Amount (USD)" },
+      "image_choice": { "type": "string", "title": "Image Choice" }
+    },
+    "required": ["full_name", "department"]
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Component Showcase", "subtitle": "All 37 A2UI components" }, "children": ["divider1"] },
+
+    { "id": "divider1", "component": "Divider", "props": { "label": "Display Components" }, "parent": "card", "children": ["text-heading", "badge-row", "progress-section", "link-row", "image-row"] },
+
+    { "id": "text-heading", "component": "Text", "props": { "text": "Usage hints for every text scale:", "usageHint": "heading" }, "parent": "divider1" },
+    { "id": "text-sub", "component": "Text", "props": { "text": "Subheading shows section context", "usageHint": "subheading" }, "parent": "divider1" },
+    { "id": "text-body", "component": "Text", "props": { "text": "Body text for paragraphs and descriptions. This is the main reading text.", "usageHint": "body" }, "parent": "divider1" },
+    { "id": "text-caption", "component": "Text", "props": { "text": "Caption for secondary information and timestamps", "usageHint": "caption" }, "parent": "divider1" },
+    { "id": "text-label", "component": "Text", "props": { "text": "LABEL TEXT FOR FIELDS", "usageHint": "label" }, "parent": "divider1" },
+
+    { "id": "badge-row", "component": "Row", "props": { "gap": 8 }, "parent": "divider1", "children": ["badge-solid", "badge-outline", "badge-subtle"] },
+    { "id": "badge-solid", "component": "Badge", "props": { "text": "Solid", "color": "#3B5BDB", "variant": "solid" }, "parent": "badge-row" },
+    { "id": "badge-outline", "component": "Badge", "props": { "text": "Outline", "color": "#10B981", "variant": "outline" }, "parent": "badge-row" },
+    { "id": "badge-subtle", "component": "Badge", "props": { "text": "Subtle", "color": "#F59E0B", "variant": "subtle" }, "parent": "badge-row" },
+
+    { "id": "progress-section", "component": "Column", "props": { "gap": 8 }, "parent": "divider1", "children": ["prog-success", "prog-warning", "prog-default"] },
+    { "id": "prog-success", "component": "ProgressBar", "props": { "value": 100, "label": "Deployment", "showValue": true, "variant": "success" }, "parent": "progress-section" },
+    { "id": "prog-warning", "component": "ProgressBar", "props": { "value": 65, "label": "Review Progress", "showValue": true, "variant": "warning" }, "parent": "progress-section" },
+    { "id": "prog-default", "component": "ProgressBar", "props": { "value": 30, "label": "Onboarding", "showValue": true, "variant": "default" }, "parent": "progress-section" },
+
+    { "id": "link-row", "component": "Row", "props": { "gap": 12 }, "parent": "divider1", "children": ["link-docs", "link-github"] },
+    { "id": "link-docs", "component": "Link", "props": { "text": "Documentation", "href": "https://example.com/docs" }, "parent": "link-row" },
+    { "id": "link-github", "component": "Link", "props": { "text": "GitHub", "href": "https://github.com", "target": "_blank" }, "parent": "link-row" },
+
+    { "id": "image-row", "component": "Row", "props": { "gap": 8 }, "parent": "divider1", "children": ["img-demo"] },
+    { "id": "img-demo", "component": "Image", "props": { "src": "https://placehold.co/300x150/3B5BDB/white?text=Ido+Placeholder", "alt": "Placeholder image", "fit": "cover", "radius": "md" }, "parent": "image-row" },
+
+    { "id": "divider2", "component": "Divider", "props": { "label": "Data Components" }, "parent": "card", "children": ["table-demo", "datagrid-demo", "chart-row", "product-demo", "map-demo"] },
+
+    { "id": "table-demo", "component": "Table", "props": { "headers": ["Name", "Role", "Status"], "rows": [["Alice", "Engineer", "Active"], ["Bob", "Designer", "Active"], ["Carol", "PM", "On Leave"]], "striped": true, "compact": false }, "parent": "divider2" },
+    { "id": "datagrid-demo", "component": "DataGrid", "props": { "columns": [{ "key": "metric", "label": "Metric" }, { "key": "value", "label": "Value" }, { "key": "target", "label": "Target" }], "rows": [{ "metric": "Uptime", "value": "99.9%", "target": "99.5%" }, { "metric": "Latency", "value": "45ms", "target": "50ms" }, { "metric": "Errors", "value": "0.01%", "target": "0.1%" }] }, "parent": "divider2" },
+
+    { "id": "chart-row", "component": "Row", "props": { "gap": 8, "maxColumns": 2, "align": "end" }, "parent": "divider2", "children": ["line-chart", "bar-chart", "pie-chart", "donut-chart"] },
+    { "id": "line-chart", "component": "LineChart", "props": { "title": "Revenue", "series": [{ "name": "Product A", "data": [{ "label": "Q1", "value": 8 }, { "label": "Q2", "value": 22 }, { "label": "Q3", "value": 15 }, { "label": "Q4", "value": 28 }] }, { "name": "Product B", "data": [{ "label": "Q1", "value": 5 }, { "label": "Q2", "value": 12 }, { "label": "Q3", "value": 18 }, { "label": "Q4", "value": 8 }] }], "height": 120, "colors": ["#3B5BDB", "#10B981"] }, "parent": "chart-row" },
+    { "id": "bar-chart", "component": "BarChart", "props": { "title": "Weekly Activity", "data": [{ "label": "Mon", "value": 12 }, { "label": "Tue", "value": 19 }, { "label": "Wed", "value": 8 }, { "label": "Thu", "value": 15 }, { "label": "Fri", "value": 22 }], "height": 100, "colors": ["#3B5BDB"] }, "parent": "chart-row" },
+    { "id": "pie-chart", "component": "PieChart", "props": { "title": "Surface Types", "data": [{ "label": "Forms", "value": 35 }, { "label": "Approvals", "value": 25 }, { "label": "Notifications", "value": 40 }], "height": 100, "colors": ["#3B5BDB", "#10B981", "#F59E0B"] }, "parent": "chart-row" },
+    { "id": "donut-chart", "component": "DonutChart", "props": { "title": "System Usage", "data": [{ "label": "CPU", "value": 45 }, { "label": "Memory", "value": 30 }, { "label": "Disk", "value": 15 }, { "label": "Network", "value": 10 }], "height": 100, "colors": ["#8B5CF6", "#3B82F6", "#F59E0B", "#EC4899"] }, "parent": "chart-row" },
+
+    { "id": "product-demo", "component": "ProductGrid", "props": { "bind": "selected_plan", "mode": "multiple", "columns": 3 }, "parent": "divider2", "children": ["item-a", "item-b", "item-c"] },
+    { "id": "item-a", "component": "ItemCard", "props": { "title": "Pro Plan", "subtitle": "For growing teams", "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop", "price": "$29/mo", "badge": "Popular", "value": "pro" }, "parent": "product-demo" },
+    { "id": "item-b", "component": "ItemCard", "props": { "title": "Enterprise", "subtitle": "Unlimited everything", "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop", "price": "$99/mo", "badge": "Best Value", "value": "enterprise" }, "parent": "product-demo" },
+    { "id": "item-c", "component": "ItemCard", "props": { "title": "Starter", "subtitle": "Free forever", "image": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&h=300&fit=crop", "price": "$0", "badge": "Free", "value": "starter" }, "parent": "product-demo" },
+
+    { "id": "map-demo", "component": "Map", "props": { "lat": 51.5074, "lng": -0.1278, "zoom": 12, "marker": { "lat": 51.5074, "lng": -0.1278, "label": "London Office" } }, "parent": "divider2" },
+
+    { "id": "divider3", "component": "Divider", "props": { "label": "Layout Components" }, "parent": "card", "children": ["accordion-demo", "stepper-demo"] },
+
+    { "id": "accordion-demo", "component": "Accordion", "props": { "title": "What is Ido?", "defaultOpen": true }, "parent": "divider3", "children": ["accordion-content"] },
+    { "id": "accordion-content", "component": "Text", "props": { "text": "Ido is an AI-to-Human interaction gateway. AI agents send structured requests — forms, approvals, notifications — and humans respond.", "usageHint": "body" }, "parent": "accordion-demo" },
+
+    { "id": "stepper-demo", "component": "Stepper", "props": { "steps": [{ "label": "Agent sends request", "completed": true }, { "label": "Human reviews", "description": "You are here", "completed": false }, { "label": "Response returned", "completed": false }], "current": 1 }, "parent": "divider3" },
+
+    { "id": "divider4", "component": "Divider", "props": { "label": "Form Inputs" }, "parent": "card", "children": ["form-root"] },
+
+    { "id": "form-root", "component": "Form", "props": { "submitLabel": "Submit Showcase" }, "parent": "divider4", "children": ["field-name", "field-email", "field-dept", "choice-priority", "check-terms", "field-date", "field-rating", "field-slider", "file-demo", "image-select", "field-signature", "field-channels", "field-has-budget", "field-budget-amount", "field-notes"] },
+
+    { "id": "field-name", "component": "InputField", "props": { "label": "Full Name", "type": "text", "placeholder": "Enter your name" }, "bind": "full_name", "parent": "form-root" },
+    { "id": "field-email", "component": "InputField", "props": { "label": "Email Address", "type": "email", "placeholder": "you@example.com" }, "bind": "email", "parent": "form-root" },
+    { "id": "field-dept", "component": "Select", "props": { "label": "Department", "options": [{ "label": "Engineering", "value": "Engineering" }, { "label": "Design", "value": "Design" }, { "label": "Product", "value": "Product" }, { "label": "Sales", "value": "Sales" }] }, "bind": "department", "parent": "form-root" },
+    { "id": "choice-priority", "component": "ChoicePicker", "props": { "label": "Priority", "options": [{ "label": "Low", "value": "Low" }, { "label": "Medium", "value": "Medium" }, { "label": "High", "value": "High" }, { "label": "Critical", "value": "Critical" }], "variant": "chips" }, "bind": "priority", "parent": "form-root" },
+    { "id": "check-terms", "component": "Checkbox", "props": { "label": "I agree to the terms and conditions" }, "bind": "agree_terms", "parent": "form-root" },
+    { "id": "field-date", "component": "DatePicker", "props": { "label": "Start Date" }, "bind": "start_date", "parent": "form-root" },
+    { "id": "field-rating", "component": "Rating", "props": { "label": "Satisfaction", "max": 5 }, "bind": "satisfaction", "parent": "form-root" },
+    { "id": "field-slider", "component": "Slider", "props": { "label": "Budget %", "min": 0, "max": 100, "step": 5 }, "bind": "budget_pct", "parent": "form-root" },
+    { "id": "file-demo", "component": "FileInput", "props": { "label": "Attach Supporting Document", "accept": ".pdf,.doc,.docx" }, "parent": "form-root" },
+    { "id": "image-select", "component": "ImageSelect", "props": { "items": [{ "src": "https://placehold.co/200/3B5BDB/white?text=A", "value": "a", "label": "Option A" }, { "src": "https://placehold.co/200/10B981/white?text=B", "value": "b", "label": "Option B" }, { "src": "https://placehold.co/200/F59E0B/white?text=C", "value": "c", "label": "Option C" }], "mode": "single", "columns": 3 }, "bind": "image_choice", "parent": "form-root" },
+    { "id": "field-signature", "component": "Signature", "props": { "label": "Sign here" }, "bind": "signature", "parent": "form-root" },
+    { "id": "field-channels", "component": "ChoicePicker", "props": { "label": "Notify via (multi-select)", "options": [{ "label": "Email", "value": "email" }, { "label": "Slack", "value": "slack" }, { "label": "SMS", "value": "sms" }, { "label": "Teams", "value": "teams" }], "variant": "checkbox" }, "bind": "notify_channels", "parent": "form-root" },
+    { "id": "field-has-budget", "component": "Checkbox", "props": { "label": "Has budget approval?" }, "bind": "has_budget", "parent": "form-root" },
+    { "id": "field-budget-amount", "component": "InputField", "props": { "label": "Budget Amount (USD)", "type": "number", "min": 0, "placeholder": "Only shown if budget checkbox is checked" }, "bind": "budget_amount", "parent": "form-root", "visible": { "when": "has_budget", "operator": "equals", "value": true } },
+    { "id": "field-notes", "component": "TextField", "props": { "label": "Additional Notes", "placeholder": "Any other details...", "rows": 3 }, "bind": "notes", "parent": "form-root" }
+  ]
+}

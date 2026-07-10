@@ -1,0 +1,59 @@
+{
+  "surface_type": "approval",
+  "surface_title": "Production Deployment — v2.4.0",
+  "context": "Release v2.4.0 is ready to deploy to production. Please review the changes and approve.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "reason": { "type": "string", "title": "Reason" }
+    }
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Production Deployment", "subtitle": "v2.4.0 → production" }, "children": ["stepper", "divider", "summary", "changes-table", "metrics-row", "divider2", "risk-section"] },
+
+    { "id": "stepper", "component": "Stepper", "props": { "steps": [
+      { "label": "Code merged", "completed": true },
+      { "label": "CI passed", "completed": true },
+      { "label": "Staging verified", "completed": true },
+      { "label": "Approval", "description": "You are here", "completed": false },
+      { "label": "Deploy", "completed": false }
+    ], "current": 3 }, "parent": "card" },
+
+    { "id": "divider", "component": "Divider", "props": { "label": "Release Summary" }, "parent": "card" },
+
+    { "id": "summary", "component": "RichText", "props": { "markdown": "**Branch:** `release/v2.4.0`\n**Commits:** 23\n**Files changed:** 47\n**Lines:** +1,204 / -389\n**Author:** alice@company.com" }, "parent": "card" },
+
+    { "id": "changes-table", "component": "Table", "props": { "headers": ["Area", "Change", "Risk"], "rows": [
+      ["Auth", "OIDC token refresh", "Low"],
+      ["API", "New /api/v2/surfaces endpoint", "Medium"],
+      ["DB", "Migration 004 — add indexes", "Medium"],
+      ["UI", "Dashboard redesign", "Low"],
+      ["Infra", "Docker base image bump", "Low"]
+    ], "striped": true, "compact": true }, "parent": "card" },
+
+    { "id": "metrics-row", "component": "Row", "props": { "gap": 8, "maxColumns": 3 }, "parent": "card", "children": ["metric-tests", "metric-coverage", "metric-build"] },
+    { "id": "metric-tests", "component": "ProgressBar", "props": { "value": 100, "label": "Tests passing", "showValue": true, "variant": "success" }, "parent": "metrics-row" },
+    { "id": "metric-coverage", "component": "ProgressBar", "props": { "value": 87, "label": "Code coverage", "showValue": true, "variant": "default" }, "parent": "metrics-row" },
+    { "id": "metric-build", "component": "ProgressBar", "props": { "value": 100, "label": "Build status", "showValue": true, "variant": "success" }, "parent": "metrics-row" },
+
+    { "id": "divider2", "component": "Divider", "props": { "label": "Risk Assessment" }, "parent": "card" },
+
+    { "id": "risk-section", "component": "Column", "props": { "gap": 8 }, "parent": "card", "children": ["risk-badges", "risk-notes"] },
+    { "id": "risk-badges", "component": "Row", "props": { "gap": 8 }, "parent": "risk-section", "children": ["risk-level", "risk-rollback", "risk-reviewed"] },
+    { "id": "risk-level", "component": "Badge", "props": { "text": "Risk: Medium", "color": "#F59E0B", "variant": "solid" }, "parent": "risk-badges" },
+    { "id": "risk-rollback", "component": "Badge", "props": { "text": "Rollback: < 2 min", "color": "#10B981", "variant": "outline" }, "parent": "risk-badges" },
+    { "id": "risk-reviewed", "component": "Badge", "props": { "text": "Reviewed by 3", "color": "#3B82F6", "variant": "subtle" }, "parent": "risk-badges" },
+    { "id": "risk-notes", "component": "Accordion", "props": { "title": "Rollback procedure", "defaultOpen": false }, "parent": "risk-section", "children": ["rollback-text"] },
+    { "id": "rollback-text", "component": "RichText", "props": { "markdown": "1. Run `kubectl rollout undo deployment/ido-api`\n2. Revert DB migration 004: `ido db-restore --from backup-pre-2.4.0`\n3. Verify health: `curl /api/v1/health`\n4. Notify #ops channel" }, "parent": "risk-notes" }
+  ],
+  "action_validation": {
+    "approve": {},
+    "reject": { "required_fields": ["reason"] }
+  },
+  "configuration": {
+    "pushNotificationConfig": {
+      "url": "https://ci.example.com/api/deploy/callback",
+      "token": "deploy-token-xxx"
+    }
+  }
+}

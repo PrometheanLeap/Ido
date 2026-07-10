@@ -1,0 +1,15 @@
+{
+  "surface_type": "approval",
+  "surface_title": "Speaker Approval",
+  "context": "Approve Taylor Morgan as keynote speaker for DevCon 2026.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "reason": { "type": "string", "title": "Reason (optional)" }
+    }
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Speaker Approval" }, "children": ["info"] },
+    { "id": "info", "component": "RichText", "props": { "markdown": "**Speaker**: Taylor Morgan, VP of Engineering at TechCorp. 12 years in distributed systems. Previously led infra at ScaleAI.  \n**Talk**: \"Beyond REST: Event-Driven Architectures at Scale\"  \n**Budget impact**: $5,000 honorarium + travel" }, "parent": "card" }
+  ]
+}

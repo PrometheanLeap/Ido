@@ -1,0 +1,25 @@
+{
+  "surface_type": "form",
+  "surface_title": "Employee Onboarding",
+  "context": "Complete onboarding for the new hire.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string", "title": "Full Name" },
+      "email": { "type": "string", "title": "Email Address" },
+      "department": { "type": "string", "title": "Department", "enum": ["Engineering", "Design", "Product", "Sales", "Marketing"] },
+      "start_date": { "type": "string", "title": "Start Date" },
+      "manager": { "type": "string", "title": "Reporting Manager" }
+    },
+    "required": ["name", "email", "department", "start_date"]
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Employee Onboarding" }, "children": ["form-root"] },
+    { "id": "form-root", "component": "Form", "props": { "submitLabel": "Onboard" }, "parent": "card", "children": ["name", "email", "department", "start_date", "manager"] },
+    { "id": "name", "component": "InputField", "props": { "label": "Full Name", "type": "text" }, "bind": "name", "parent": "form-root" },
+    { "id": "email", "component": "InputField", "props": { "label": "Email Address", "type": "email" }, "bind": "email", "parent": "form-root" },
+    { "id": "department", "component": "Select", "props": { "label": "Department", "options": [{"label": "Engineering", "value": "Engineering"}, {"label": "Design", "value": "Design"}, {"label": "Product", "value": "Product"}, {"label": "Sales", "value": "Sales"}, {"label": "Marketing", "value": "Marketing"}] }, "bind": "department", "parent": "form-root" },
+    { "id": "start_date", "component": "InputField", "props": { "label": "Start Date", "type": "date" }, "bind": "start_date", "parent": "form-root" },
+    { "id": "manager", "component": "InputField", "props": { "label": "Reporting Manager", "type": "text" }, "bind": "manager", "parent": "form-root" }
+  ]
+}

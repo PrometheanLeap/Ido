@@ -1,0 +1,37 @@
+{
+  "surface_type": "notification",
+  "surface_title": "🔴 Critical: Database Connection Pool Exhausted",
+  "context": "Production database connection pool reached 100% capacity. Response times degrading.",
+  "severity": "critical",
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Incident: DB Pool Exhaustion", "subtitle": "Started 3 minutes ago · Auto-detected" }, "children": ["badge-row", "alert-text", "divider", "metrics-grid", "divider2", "timeline"] },
+
+    { "id": "badge-row", "component": "Row", "props": { "gap": 8 }, "parent": "card", "children": ["badge-sev", "badge-status", "badge-ack"] },
+    { "id": "badge-sev", "component": "Badge", "props": { "text": "SEV1 — Critical", "color": "#DC2626", "variant": "solid" }, "parent": "badge-row" },
+    { "id": "badge-status", "component": "Badge", "props": { "text": "Investigating", "color": "#F59E0B", "variant": "outline" }, "parent": "badge-row" },
+    { "id": "badge-ack", "component": "Badge", "props": { "text": "Auto-acknowledged", "color": "#6B7280", "variant": "subtle" }, "parent": "badge-row" },
+
+    { "id": "alert-text", "component": "RichText", "props": { "markdown": "**Connection pool exhausted** on `prod-db-primary.cluster-cx4f...rds.amazonaws.com`\n\n- **Pool size:** 20/20 connections (100%)\n- **Queue depth:** 47 requests waiting\n- **P99 latency:** 4,200ms (normal: 45ms)\n- **Error rate:** 12.3% (5xx)\n\n**Affected services:** `ido-api`, `ido-worker`\n**Impact:** Users experiencing timeouts on dashboard load" }, "parent": "card" },
+
+    { "id": "divider", "component": "Divider", "props": { "label": "Live Metrics" }, "parent": "card" },
+
+    { "id": "metrics-grid", "component": "Row", "props": { "gap": 8, "maxColumns": 2 }, "parent": "card", "children": ["chart-connections", "chart-latency"] },
+    { "id": "chart-connections", "component": "LineChart", "props": { "title": "Active Connections", "series": [{ "name": "Connections", "data": [
+      { "label": "-15m", "value": 8 }, { "label": "-12m", "value": 12 }, { "label": "-9m", "value": 15 },
+      { "label": "-6m", "value": 18 }, { "label": "-3m", "value": 20 }, { "label": "now", "value": 20 }
+    ] }], "height": 100, "colors": ["#DC2626"] }, "parent": "metrics-grid" },
+    { "id": "chart-latency", "component": "LineChart", "props": { "title": "P99 Latency (ms)", "series": [{ "name": "Latency", "data": [
+      { "label": "-15m", "value": 45 }, { "label": "-12m", "value": 52 }, { "label": "-9m", "value": 180 },
+      { "label": "-6m", "value": 890 }, { "label": "-3m", "value": 3200 }, { "label": "now", "value": 4200 }
+    ] }], "height": 100, "colors": ["#F59E0B"] }, "parent": "metrics-grid" },
+
+    { "id": "divider2", "component": "Divider", "props": { "label": "Incident Timeline" }, "parent": "card" },
+
+    { "id": "timeline", "component": "Stepper", "props": { "steps": [
+      { "label": "Pool hit 80%", "description": "T-6m · Auto-scaled +2 connections", "completed": true },
+      { "label": "Pool exhausted", "description": "T-3m · Alert triggered", "completed": true },
+      { "label": "Investigating", "description": "T-0m · On-call paged", "completed": false },
+      { "label": "Resolved", "completed": false }
+    ], "current": 2 }, "parent": "card" }
+  ]
+}

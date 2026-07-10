@@ -1,0 +1,13 @@
+{
+  "surface_type": "notification",
+  "surface_title": "System Health Check",
+  "context": "All systems operational. Uptime: 99.99% this month.",
+  "severity": "success",
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "System Health" }, "children": ["badge-row", "body"] },
+    { "id": "badge-row", "component": "Row", "props": { "gap": 8 }, "parent": "card", "children": ["health", "uptime"] },
+    { "id": "health", "component": "Badge", "props": { "text": "Healthy", "color": "#10B981", "variant": "solid" }, "parent": "badge-row" },
+    { "id": "uptime", "component": "Badge", "props": { "text": "99.99% Uptime", "color": "#3B82F6", "variant": "outline" }, "parent": "badge-row" },
+    { "id": "body", "component": "RichText", "props": { "markdown": "All systems operational. No incidents this month." }, "parent": "card" }
+  ]
+}

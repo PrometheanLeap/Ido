@@ -1,0 +1,25 @@
+{
+  "surface_type": "form",
+  "surface_title": "Conference Registration",
+  "context": "Register for DevCon 2026.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string", "title": "Full Name" },
+      "email": { "type": "string", "title": "Email" },
+      "ticket_type": { "type": "string", "title": "Ticket Type", "enum": ["General", "VIP", "Workshop"] },
+      "dietary": { "type": "string", "title": "Dietary Requirements" },
+      "tshirt_size": { "type": "string", "title": "T-Shirt Size", "enum": ["S", "M", "L", "XL", "XXL"] }
+    },
+    "required": ["name", "email", "ticket_type"]
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "DevCon 2026 Registration" }, "children": ["form-root"] },
+    { "id": "form-root", "component": "Form", "props": { "submitLabel": "Register" }, "parent": "card", "children": ["name", "email", "ticket", "diet", "size"] },
+    { "id": "name", "component": "InputField", "props": { "label": "Full Name", "type": "text" }, "bind": "name", "parent": "form-root" },
+    { "id": "email", "component": "InputField", "props": { "label": "Email", "type": "email" }, "bind": "email", "parent": "form-root" },
+    { "id": "ticket", "component": "Select", "props": { "label": "Ticket Type", "options": [{"label": "General ($299)", "value": "General"}, {"label": "VIP ($799)", "value": "VIP"}, {"label": "Workshop ($499)", "value": "Workshop"}] }, "bind": "ticket_type", "parent": "form-root" },
+    { "id": "diet", "component": "InputField", "props": { "label": "Dietary Requirements", "type": "text" }, "bind": "dietary", "parent": "form-root" },
+    { "id": "size", "component": "Select", "props": { "label": "T-Shirt Size", "options": [{"label": "S", "value": "S"}, {"label": "M", "value": "M"}, {"label": "L", "value": "L"}, {"label": "XL", "value": "XL"}, {"label": "XXL", "value": "XXL"}] }, "bind": "tshirt_size", "parent": "form-root" }
+  ]
+}

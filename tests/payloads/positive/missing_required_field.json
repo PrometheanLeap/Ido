@@ -1,0 +1,1 @@
+{"surface_type":"form","surface_title":"Required Fields","inputs_schema":{"type":"object","properties":{"name":{"type":"string","title":"Name"}},"required":["name"]}}

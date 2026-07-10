@@ -1,0 +1,27 @@
+# ── Ido with SQLite (default) ───────────────────────────────
+# docker compose up -d
+
+services:
+  ido:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT:-8645}:8645"
+    env_file:
+      - .env
+    environment:
+      - IDO_MODE=${IDO_MODE:-personal}
+      - SQLITE_PATH=/app/data/ido.db
+    volumes:
+      - ido_data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8645/api/v1/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  ido_data:

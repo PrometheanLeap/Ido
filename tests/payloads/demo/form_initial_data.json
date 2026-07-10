@@ -1,0 +1,27 @@
+{
+  "surface_type": "form",
+  "surface_title": "Form with Pre-filled Data",
+  "context": "Review and update your profile information.",
+  "initial_data_model": {
+    "department": "Engineering",
+    "priority": "high",
+    "status": "active"
+  },
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "department": { "type": "string", "title": "Department", "enum": ["Engineering", "Design", "Product", "Sales"] },
+      "priority": { "type": "string", "title": "Priority", "enum": ["low", "medium", "high", "critical"] },
+      "status": { "type": "string", "title": "Status", "enum": ["active", "inactive"] },
+      "notes": { "type": "string", "title": "Additional Notes" }
+    }
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Profile Review" }, "children": ["form-root"] },
+    { "id": "form-root", "component": "Form", "props": { "submitLabel": "Update" }, "parent": "card", "children": ["dept", "pri", "stat", "notes"] },
+    { "id": "dept", "component": "Select", "props": { "label": "Department", "options": [{"label": "Engineering", "value": "Engineering"}, {"label": "Design", "value": "Design"}, {"label": "Product", "value": "Product"}, {"label": "Sales", "value": "Sales"}] }, "bind": "department", "parent": "form-root" },
+    { "id": "pri", "component": "Select", "props": { "label": "Priority", "options": [{"label": "Low", "value": "low"}, {"label": "Medium", "value": "medium"}, {"label": "High", "value": "high"}, {"label": "Critical", "value": "critical"}] }, "bind": "priority", "parent": "form-root" },
+    { "id": "stat", "component": "Select", "props": { "label": "Status", "options": [{"label": "Active", "value": "active"}, {"label": "Inactive", "value": "inactive"}] }, "bind": "status", "parent": "form-root" },
+    { "id": "notes", "component": "TextField", "props": { "label": "Additional Notes", "rows": 2 }, "bind": "notes", "parent": "form-root" }
+  ]
+}

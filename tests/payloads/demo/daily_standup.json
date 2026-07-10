@@ -1,0 +1,21 @@
+{
+  "surface_type": "form",
+  "surface_title": "Daily Standup",
+  "context": "Share your daily update with the team.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "yesterday": { "type": "string", "title": "What did you do yesterday?" },
+      "today": { "type": "string", "title": "What will you do today?" },
+      "blockers": { "type": "string", "title": "Any blockers?" }
+    },
+    "required": ["today"]
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Daily Standup" }, "children": ["form-root"] },
+    { "id": "form-root", "component": "Form", "props": { "submitLabel": "Submit Standup" }, "parent": "card", "children": ["yesterday", "today", "blockers"] },
+    { "id": "yesterday", "component": "TextField", "props": { "label": "What did you do yesterday?", "rows": 3 }, "bind": "yesterday", "parent": "form-root" },
+    { "id": "today", "component": "TextField", "props": { "label": "What will you do today?", "rows": 3 }, "bind": "today", "parent": "form-root" },
+    { "id": "blockers", "component": "TextField", "props": { "label": "Any blockers?", "rows": 2 }, "bind": "blockers", "parent": "form-root" }
+  ]
+}

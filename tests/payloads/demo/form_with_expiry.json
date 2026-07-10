@@ -1,0 +1,20 @@
+{
+  "surface_type": "form",
+  "surface_title": "Form with Expiry",
+  "context": "This form expires in 30 minutes.",
+  "expires_at": "2026-12-31T23:59:59Z",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "action": { "type": "string", "title": "Required Action" },
+      "notes": { "type": "string", "title": "Notes" }
+    },
+    "required": ["action"]
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Time-Sensitive Request" }, "children": ["form-root"] },
+    { "id": "form-root", "component": "Form", "props": { "submitLabel": "Submit" }, "parent": "card", "children": ["action", "notes"] },
+    { "id": "action", "component": "InputField", "props": { "label": "Required Action", "type": "text" }, "bind": "action", "parent": "form-root" },
+    { "id": "notes", "component": "TextField", "props": { "label": "Notes", "rows": 3 }, "bind": "notes", "parent": "form-root" }
+  ]
+}

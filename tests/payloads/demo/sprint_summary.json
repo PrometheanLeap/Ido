@@ -1,0 +1,38 @@
+{
+  "surface_type": "notification",
+  "surface_title": "Weekly Sprint Summary",
+  "context": "Sprint 24 wrapped up. Here's how the team performed.",
+  "severity": "info",
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Sprint 24 Summary", "subtitle": "Jun 24 – Jul 7 · 2 weeks" }, "children": ["badge-row", "divider1", "velocity-chart", "divider2", "completion-table", "divider3", "highlights"] },
+
+    { "id": "badge-row", "component": "Row", "props": { "gap": 8 }, "parent": "card", "children": ["badge-points", "badge-complete", "badge-carry"] },
+    { "id": "badge-points", "component": "Badge", "props": { "text": "48 / 52 points", "color": "#3B82F6", "variant": "solid" }, "parent": "badge-row" },
+    { "id": "badge-complete", "component": "Badge", "props": { "text": "92% complete", "color": "#10B981", "variant": "outline" }, "parent": "badge-row" },
+    { "id": "badge-carry", "component": "Badge", "props": { "text": "4 pts carried over", "color": "#F59E0B", "variant": "subtle" }, "parent": "badge-row" },
+
+    { "id": "divider1", "component": "Divider", "props": { "label": "Velocity Trend" }, "parent": "card" },
+
+    { "id": "velocity-chart", "component": "BarChart", "props": { "title": "Story Points Completed", "data": [
+      { "label": "S20", "value": 38 },
+      { "label": "S21", "value": 42 },
+      { "label": "S22", "value": 45 },
+      { "label": "S23", "value": 40 },
+      { "label": "S24", "value": 48 }
+    ], "height": 120, "colors": ["#3B82F6"] }, "parent": "card" },
+
+    { "id": "divider2", "component": "Divider", "props": { "label": "Epics Breakdown" }, "parent": "card" },
+
+    { "id": "completion-table", "component": "Table", "props": { "headers": ["Epic", "Done", "Total", "%"], "rows": [
+      ["Corporate user-scoping", "5", "5", "100%"],
+      ["PWA improvements", "4", "4", "100%"],
+      ["Refactor — Phase 2", "6", "7", "86%"],
+      ["Docs & README", "3", "3", "100%"],
+      ["Bug fixes", "4", "5", "80%"]
+    ], "striped": true, "compact": true }, "parent": "card" },
+
+    { "id": "divider3", "component": "Divider", "props": { "label": "Highlights" }, "parent": "card" },
+
+    { "id": "highlights", "component": "RichText", "props": { "markdown": "### ✅ Shipped\n- Corporate user-scoping (7-step plan complete)\n- PWA icons with solid backgrounds\n- Graceful shutdown + MCP SSE TTL\n\n### 🔄 Carried to S25\n- Dashboard sub-component split (in progress)\n- Tenant isolation tests (needs 2 key pairs)\n\n### 📊 Metrics\n- **PRs merged:** 14\n- **Avg review time:** 3.2h\n- **Bugs found in prod:** 0\n- **Test coverage:** 87% ↑2%" }, "parent": "card" }
+  ]
+}

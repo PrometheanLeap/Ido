@@ -1,0 +1,11 @@
+{
+  "surface_type": "notification",
+  "surface_title": "Deploy: v3.2.1 to Production",
+  "context": "Deployment completed successfully. All health checks passing.",
+  "severity": "info",
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Deploy v3.2.1" }, "children": ["progress", "body"] },
+    { "id": "progress", "component": "ProgressBar", "props": { "value": 100, "label": "Deployment", "showValue": true, "variant": "success" }, "parent": "card" },
+    { "id": "body", "component": "RichText", "props": { "markdown": "✅ Build passed\n✅ Tests passed (342/342)\n✅ Health checks green\n🕐 Duration: 4m 32s" }, "parent": "card" }
+  ]
+}

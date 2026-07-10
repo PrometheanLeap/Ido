@@ -1,0 +1,12 @@
+{
+  "surface_type": "form",
+  "surface_title": "Simple Text Form",
+  "context": "A basic form with a single text field",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string", "title": "Your Name" }
+    },
+    "required": ["name"]
+  }
+}

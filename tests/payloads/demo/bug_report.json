@@ -1,0 +1,77 @@
+{
+  "surface_type": "form",
+  "surface_title": "Bug Report",
+  "context": "Report a bug. Fields marked * are required. Severity and type help us triage.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "title": { "type": "string", "title": "Bug Title" },
+      "severity": { "type": "string", "title": "Severity" },
+      "bug_type": { "type": "string", "title": "Type" },
+      "environment": { "type": "string", "title": "Environment" },
+      "description": { "type": "string", "title": "Description" },
+      "steps": { "type": "string", "title": "Steps to Reproduce" },
+      "expected": { "type": "string", "title": "Expected Behaviour" },
+      "actual": { "type": "string", "title": "Actual Behaviour" },
+      "browser": { "type": "string", "title": "Browser" },
+      "can_reproduce": { "type": "boolean", "title": "Can reproduce consistently?" },
+      "reproduce_rate": { "type": "string", "title": "Reproduction Rate" },
+      "workaround": { "type": "string", "title": "Workaround (if any)" }
+    },
+    "required": ["title", "severity", "bug_type", "description", "steps"]
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Bug Report", "subtitle": "Help us squash it" }, "children": ["form-root"] },
+
+    { "id": "form-root", "component": "Form", "props": { "submitLabel": "Submit Bug Report" }, "parent": "card", "children": ["field-title", "row-severity-type", "row-env-browser", "field-description", "field-steps", "row-expected-actual", "check-reproduce", "field-rate", "field-workaround"] },
+
+    { "id": "field-title", "component": "InputField", "props": { "label": "Bug Title", "type": "text", "placeholder": "e.g. Dashboard cards overlap on mobile", "required": true }, "bind": "title", "parent": "form-root" },
+
+    { "id": "row-severity-type", "component": "Row", "props": { "gap": 8, "maxColumns": 2 }, "parent": "form-root", "children": ["choice-severity", "choice-type"] },
+    { "id": "choice-severity", "component": "ChoicePicker", "props": { "label": "Severity", "options": [
+      { "label": "🔴 Critical", "value": "critical" },
+      { "label": "🟠 High", "value": "high" },
+      { "label": "🟡 Medium", "value": "medium" },
+      { "label": "🟢 Low", "value": "low" }
+    ], "variant": "chips" }, "bind": "severity", "parent": "row-severity-type" },
+    { "id": "choice-type", "component": "Select", "props": { "label": "Bug Type", "options": [
+      { "label": "UI / Visual", "value": "ui" },
+      { "label": "Functional", "value": "functional" },
+      { "label": "Performance", "value": "performance" },
+      { "label": "Security", "value": "security" },
+      { "label": "Data Loss", "value": "data" },
+      { "label": "Other", "value": "other" }
+    ] }, "bind": "bug_type", "parent": "row-severity-type" },
+
+    { "id": "row-env-browser", "component": "Row", "props": { "gap": 8, "maxColumns": 2 }, "parent": "form-root", "children": ["select-env", "select-browser"] },
+    { "id": "select-env", "component": "Select", "props": { "label": "Environment", "options": [
+      { "label": "Production", "value": "prod" },
+      { "label": "Staging", "value": "staging" },
+      { "label": "Development", "value": "dev" },
+      { "label": "Local", "value": "local" }
+    ] }, "bind": "environment", "parent": "row-env-browser" },
+    { "id": "select-browser", "component": "Select", "props": { "label": "Browser", "options": [
+      { "label": "Chrome", "value": "chrome" },
+      { "label": "Firefox", "value": "firefox" },
+      { "label": "Safari", "value": "safari" },
+      { "label": "Edge", "value": "edge" },
+      { "label": "Mobile Safari", "value": "mobile-safari" },
+      { "label": "Mobile Chrome", "value": "mobile-chrome" },
+      { "label": "Other", "value": "other" }
+    ] }, "bind": "browser", "parent": "row-env-browser" },
+
+    { "id": "field-description", "component": "TextField", "props": { "label": "Description", "placeholder": "Describe the bug in detail...", "rows": 4, "required": true }, "bind": "description", "parent": "form-root" },
+
+    { "id": "field-steps", "component": "TextField", "props": { "label": "Steps to Reproduce", "placeholder": "1. Go to...\n2. Click...\n3. See error", "rows": 5, "required": true }, "bind": "steps", "parent": "form-root" },
+
+    { "id": "row-expected-actual", "component": "Row", "props": { "gap": 8, "maxColumns": 2 }, "parent": "form-root", "children": ["field-expected", "field-actual"] },
+    { "id": "field-expected", "component": "TextField", "props": { "label": "Expected Behaviour", "rows": 3 }, "bind": "expected", "parent": "row-expected-actual" },
+    { "id": "field-actual", "component": "TextField", "props": { "label": "Actual Behaviour", "rows": 3 }, "bind": "actual", "parent": "row-expected-actual" },
+
+    { "id": "check-reproduce", "component": "Checkbox", "props": { "label": "I can reproduce this consistently" }, "bind": "can_reproduce", "parent": "form-root" },
+
+    { "id": "field-rate", "component": "Slider", "props": { "label": "Reproduction Rate", "min": 0, "max": 100, "step": 10 }, "bind": "reproduce_rate", "parent": "form-root", "visible": { "when": "can_reproduce", "operator": "equals", "value": true } },
+
+    { "id": "field-workaround", "component": "TextField", "props": { "label": "Workaround (if any)", "placeholder": "Describe any workaround you've found...", "rows": 2 }, "bind": "workaround", "parent": "form-root" }
+  ]
+}

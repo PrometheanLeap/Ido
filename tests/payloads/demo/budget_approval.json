@@ -1,0 +1,52 @@
+{
+  "surface_type": "approval",
+  "surface_title": "Budget Approval — Q3 Marketing Campaign",
+  "context": "Marketing requests $45,000 for Q3 digital campaign. Requires CFO approval for amounts over $25,000.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "reason": { "type": "string", "title": "Reason" }
+    }
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Budget Approval Request", "subtitle": "Q3 Marketing Campaign" }, "children": ["summary", "divider1", "breakdown-table", "divider2", "roi-section", "divider3", "approval-chain"] },
+
+    { "id": "summary", "component": "RichText", "props": { "markdown": "**Requested by:** Sarah Chen, Head of Marketing\n**Department:** Marketing\n**Amount:** $45,000\n**Period:** Q3 2026 (Jul–Sep)\n**Campaign:** \"AI-Powered Productivity\" digital ad series\n\n**Justification:** Q2 campaign drove 340% ROI. Competitor activity increasing in target segments — early Q3 launch is time-sensitive." }, "parent": "card" },
+
+    { "id": "divider1", "component": "Divider", "props": { "label": "Budget Breakdown" }, "parent": "card" },
+
+    { "id": "breakdown-table", "component": "Table", "props": { "headers": ["Category", "Allocation", "% of Budget"], "rows": [
+      ["Google Ads", "$18,000", "40%"],
+      ["LinkedIn Ads", "$12,000", "27%"],
+      ["Content Creation", "$8,000", "18%"],
+      ["Landing Page Dev", "$4,000", "9%"],
+      ["Analytics Tools", "$3,000", "6%"]
+    ], "striped": true }, "parent": "card" },
+
+    { "id": "divider2", "component": "Divider", "props": { "label": "Projected ROI" }, "parent": "card" },
+
+    { "id": "roi-section", "component": "Column", "props": { "gap": 8 }, "parent": "card", "children": ["roi-chart", "roi-badges"] },
+    { "id": "roi-chart", "component": "BarChart", "props": { "title": "Projected vs Historical ROI", "data": [
+      { "label": "Q1 Actual", "value": 210 },
+      { "label": "Q2 Actual", "value": 340 },
+      { "label": "Q3 Projected", "value": 280 }
+    ], "height": 120, "colors": ["#3B82F6"] }, "parent": "roi-section" },
+    { "id": "roi-badges", "component": "Row", "props": { "gap": 8 }, "parent": "roi-section", "children": ["badge-roi", "badge-cac", "badge-conv"] },
+    { "id": "badge-roi", "component": "Badge", "props": { "text": "Projected ROI: 280%", "color": "#10B981", "variant": "solid" }, "parent": "roi-badges" },
+    { "id": "badge-cac", "component": "Badge", "props": { "text": "CAC: $42", "color": "#3B82F6", "variant": "outline" }, "parent": "roi-badges" },
+    { "id": "badge-conv", "component": "Badge", "props": { "text": "Conv. Rate: 3.2%", "color": "#8B5CF6", "variant": "subtle" }, "parent": "roi-badges" },
+
+    { "id": "divider3", "component": "Divider", "props": { "label": "Approval Chain" }, "parent": "card" },
+
+    { "id": "approval-chain", "component": "Stepper", "props": { "steps": [
+      { "label": "Manager", "description": "Approved by James Park", "completed": true },
+      { "label": "Finance Lead", "description": "Approved by Maria Lopez", "completed": true },
+      { "label": "CFO", "description": "Pending — your approval needed", "completed": false },
+      { "label": "Procurement", "description": "Auto-triggered on approval", "completed": false }
+    ], "current": 2 }, "parent": "card" }
+  ],
+  "action_validation": {
+    "approve": {},
+    "reject": { "required_fields": ["reason"] }
+  }
+}

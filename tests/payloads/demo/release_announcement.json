@@ -1,0 +1,36 @@
+{
+  "surface_type": "notification",
+  "surface_title": "🚀 New Release: Ido v2.4.0",
+  "context": "A new version of Ido is available. Here's what's new.",
+  "severity": "success",
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Ido v2.4.0 Released", "subtitle": "July 7, 2026" }, "children": ["badge-row", "divider1", "highlights", "divider2", "stats-grid", "divider3", "changelog-accordion", "divider4", "action-links"] },
+
+    { "id": "badge-row", "component": "Row", "props": { "gap": 8 }, "parent": "card", "children": ["badge-version", "badge-type", "badge-breaking"] },
+    { "id": "badge-version", "component": "Badge", "props": { "text": "v2.4.0", "color": "#3B82F6", "variant": "solid" }, "parent": "badge-row" },
+    { "id": "badge-type", "component": "Badge", "props": { "text": "Minor", "color": "#10B981", "variant": "outline" }, "parent": "badge-row" },
+    { "id": "badge-breaking", "component": "Badge", "props": { "text": "No breaking changes", "color": "#6B7280", "variant": "subtle" }, "parent": "badge-row" },
+
+    { "id": "divider1", "component": "Divider", "props": { "label": "Highlights" }, "parent": "card" },
+
+    { "id": "highlights", "component": "RichText", "props": { "markdown": "### ✨ New Features\n- **Corporate user-scoping** — `user_id` now enforced in corporate mode\n- **Agent discovery** — `/.well-known/agent-card.json` endpoint\n- **Graceful shutdown** — clean SSE disconnect on SIGTERM\n\n### 🐛 Fixes\n- Quiet hours now honours timezone and day-of-week\n- API-key auth fixed on key-management routes\n- Migration drift between SQLite and PostgreSQL resolved\n\n### 🔧 Improvements\n- Dashboard split into reusable sub-components\n- Full type safety — no more `as any` casts\n- Rate limiting on auth routes (brute-force protection)" }, "parent": "card" },
+
+    { "id": "divider2", "component": "Divider", "props": { "label": "By the Numbers" }, "parent": "card" },
+
+    { "id": "stats-grid", "component": "Row", "props": { "gap": 8, "maxColumns": 3 }, "parent": "card", "children": ["stat-commits", "stat-files", "stat-tests"] },
+    { "id": "stat-commits", "component": "ProgressBar", "props": { "value": 47, "label": "Commits", "showValue": true, "variant": "default" }, "parent": "stats-grid" },
+    { "id": "stat-files", "component": "ProgressBar", "props": { "value": 32, "label": "Files changed", "showValue": true, "variant": "default" }, "parent": "stats-grid" },
+    { "id": "stat-tests", "component": "ProgressBar", "props": { "value": 100, "label": "Tests passing", "showValue": true, "variant": "success" }, "parent": "stats-grid" },
+
+    { "id": "divider3", "component": "Divider", "props": { "label": "Full Changelog" }, "parent": "card" },
+
+    { "id": "changelog-accordion", "component": "Accordion", "props": { "title": "View complete changelog", "defaultOpen": false }, "parent": "card", "children": ["changelog-text"] },
+    { "id": "changelog-text", "component": "RichText", "props": { "markdown": "**Added**\n- A2A agent discovery endpoint\n- Rate limiting on `/login`, `/setup`, `/oidc/*`\n- MCP SSE session TTL (5 min)\n- `isRefreshing` dashboard indicator\n- SSE connection status badge\n- Focus trapping in SurfaceView\n- ARIA roles on Dashboard tabs\n- Solid-background PWA icons\n\n**Fixed**\n- API-key auth on key-management routes\n- Quiet hours honours `quiet_start`/`quiet_end`/`quiet_timezone`/`quiet_days`\n- MCP task retrieval no longer 500s on corrupted JSON\n- Migration drift (state default, sessions status, idempotency UNIQUE)\n\n**Changed**\n- `CreateSurfaceResult` typed concretely\n- All API methods return typed responses\n- `extractAuth` → `middleware/auth.ts`\n- `broadcastSurfaceCreated()` eliminates triplicated block\n- Dashboard split into 6 sub-components + 2 hooks\n\n**Removed**\n- Dead code: 11 unused symbols + 3 unused DB tables\n- Duplicate `authMiddleware`\n- Raw SQL in `createApiKey`/`createUser`" }, "parent": "changelog-accordion" },
+
+    { "id": "divider4", "component": "Divider", "props": {}, "parent": "card" },
+
+    { "id": "action-links", "component": "Row", "props": { "gap": 12 }, "parent": "card", "children": ["link-release", "link-docs"] },
+    { "id": "link-release", "component": "Link", "props": { "text": "Download v2.4.0", "href": "https://github.com/aherbert-pl/Ido/releases/tag/v2.4.0", "target": "_blank" }, "parent": "action-links" },
+    { "id": "link-docs", "component": "Link", "props": { "text": "Migration guide", "href": "https://github.com/aherbert-pl/Ido/blob/main/CHANGELOG.md", "target": "_blank" }, "parent": "action-links" }
+  ]
+}

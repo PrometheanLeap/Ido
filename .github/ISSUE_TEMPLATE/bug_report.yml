@@ -1,0 +1,40 @@
+---
+name: Bug report
+about: Report a bug in Ido
+title: "[bug] "
+labels: bug
+---
+
+## Describe the bug
+
+A clear description of what the bug is.
+
+## To reproduce
+
+Steps to reproduce the behaviour:
+
+1. Set `IDO_MODE` to `...`
+2. Send a request to `...`
+3. See error
+
+## Expected behaviour
+
+What you expected to happen.
+
+## Actual behaviour
+
+What actually happened.
+
+## Environment
+
+- **Ido version**: (run `curl http://localhost:8645/api/v1/health`)
+- **IDO_MODE**: `dev` / `personal` / `saas` / `corporate`
+- **Database**: SQLite / PostgreSQL
+- **Protocol**: A2A / MCP / REST
+- **Browser** (if frontend): 
+
+## Logs
+
+```
+Paste relevant logs here (redact secrets)
+```

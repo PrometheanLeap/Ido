@@ -1,0 +1,18 @@
+{
+  "surface_type": "approval",
+  "surface_title": "Vendor Approval",
+  "context": "Approve CloudSync Inc. as our new CI/CD vendor. Annual contract: $24,000.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "reason": { "type": "string", "title": "Reason" }
+    }
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Vendor Approval" }, "children": ["detail", "badges"] },
+    { "id": "detail", "component": "Text", "props": { "text": "Vendor: CloudSync Inc. | Annual: $24,000 | Term: 12 months" }, "parent": "card" },
+    { "id": "badges", "component": "Row", "props": { "gap": 8 }, "parent": "card", "children": ["score", "status"] },
+    { "id": "score", "component": "Badge", "props": { "text": "Security Score: A+", "color": "#10B981", "variant": "solid" }, "parent": "badges" },
+    { "id": "status", "component": "Badge", "props": { "text": "Compliant", "color": "#3B82F6", "variant": "outline" }, "parent": "badges" }
+  ]
+}

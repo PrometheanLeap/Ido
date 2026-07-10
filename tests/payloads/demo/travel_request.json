@@ -1,0 +1,25 @@
+{
+  "surface_type": "form",
+  "surface_title": "Travel Request",
+  "context": "Submit your business travel request for approval.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "destination": { "type": "string", "title": "Destination" },
+      "departure_date": { "type": "string", "title": "Departure Date" },
+      "return_date": { "type": "string", "title": "Return Date" },
+      "purpose": { "type": "string", "title": "Purpose of Travel" },
+      "budget": { "type": "number", "title": "Estimated Budget (USD)" }
+    },
+    "required": ["destination", "departure_date", "purpose"]
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Travel Request" }, "children": ["form-root"] },
+    { "id": "form-root", "component": "Form", "props": { "submitLabel": "Submit Request" }, "parent": "card", "children": ["dest", "dep", "ret", "purp", "budget"] },
+    { "id": "dest", "component": "InputField", "props": { "label": "Destination", "type": "text" }, "bind": "destination", "parent": "form-root" },
+    { "id": "dep", "component": "InputField", "props": { "label": "Departure Date", "type": "date" }, "bind": "departure_date", "parent": "form-root" },
+    { "id": "ret", "component": "InputField", "props": { "label": "Return Date", "type": "date" }, "bind": "return_date", "parent": "form-root" },
+    { "id": "purp", "component": "TextField", "props": { "label": "Purpose of Travel", "rows": 3 }, "bind": "purpose", "parent": "form-root" },
+    { "id": "budget", "component": "InputField", "props": { "label": "Estimated Budget (USD)", "type": "number", "min": 0 }, "bind": "budget", "parent": "form-root" }
+  ]
+}

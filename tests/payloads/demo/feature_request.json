@@ -1,0 +1,65 @@
+{
+  "surface_type": "form",
+  "surface_title": "Feature Request",
+  "context": "Submit a feature request for the product roadmap. Be specific about the problem and desired outcome.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "title": { "type": "string", "title": "Feature Title" },
+      "category": { "type": "string", "title": "Category" },
+      "priority": { "type": "string", "title": "Priority" },
+      "problem": { "type": "string", "title": "Problem" },
+      "solution": { "type": "string", "title": "Proposed Solution" },
+      "alternatives": { "type": "string", "title": "Alternatives Considered" },
+      "use_cases": { "type": "string", "title": "Use Cases" },
+      "willingness": { "type": "number", "title": "Willingness to Pay" },
+      "timeline": { "type": "string", "title": "Desired Timeline" },
+      "attach_mockup": { "type": "boolean", "title": "Attach mockup" }
+    },
+    "required": ["title", "category", "problem", "solution"]
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Feature Request", "subtitle": "Help us prioritise the roadmap" }, "children": ["form-root"] },
+
+    { "id": "form-root", "component": "Form", "props": { "submitLabel": "Submit Request" }, "parent": "card", "children": ["field-title", "row-cat-prio", "field-problem", "field-solution", "field-alternatives", "divider1", "field-usecases", "row-willingness-timeline", "check-mockup", "file-mockup"] },
+
+    { "id": "field-title", "component": "InputField", "props": { "label": "Feature Title", "type": "text", "placeholder": "e.g. Slack integration for surface notifications", "required": true }, "bind": "title", "parent": "form-root" },
+
+    { "id": "row-cat-prio", "component": "Row", "props": { "gap": 8, "maxColumns": 2 }, "parent": "form-root", "children": ["select-category", "choice-priority"] },
+    { "id": "select-category", "component": "Select", "props": { "label": "Category", "options": [
+      { "label": "Integration", "value": "integration" },
+      { "label": "UI / UX", "value": "ui" },
+      { "label": "API / Protocol", "value": "api" },
+      { "label": "Auth / Security", "value": "security" },
+      { "label": "Performance", "value": "performance" },
+      { "label": "Deployment", "value": "deployment" },
+      { "label": "Other", "value": "other" }
+    ] }, "bind": "category", "parent": "row-cat-prio" },
+    { "id": "choice-priority", "component": "ChoicePicker", "props": { "label": "Priority", "options": [
+      { "label": "Nice to have", "value": "low" },
+      { "label": "Important", "value": "medium" },
+      { "label": "Critical", "value": "high" },
+      { "label": "Blocker", "value": "blocker" }
+    ], "variant": "chips" }, "bind": "priority", "parent": "row-cat-prio" },
+
+    { "id": "field-problem", "component": "TextField", "props": { "label": "What problem does this solve?", "placeholder": "Describe the pain point or use case that isn't covered today...", "rows": 4, "required": true }, "bind": "problem", "parent": "form-root" },
+    { "id": "field-solution", "component": "TextField", "props": { "label": "Proposed Solution", "placeholder": "How would you like this to work?", "rows": 4, "required": true }, "bind": "solution", "parent": "form-root" },
+    { "id": "field-alternatives", "component": "TextField", "props": { "label": "Alternatives Considered", "placeholder": "Have you tried workarounds or other tools?", "rows": 2 }, "bind": "alternatives", "parent": "form-root" },
+
+    { "id": "divider1", "component": "Divider", "props": { "label": "Additional Context" }, "parent": "form-root" },
+
+    { "id": "field-usecases", "component": "TextField", "props": { "label": "Use Cases", "placeholder": "Who would use this and in what scenario?", "rows": 3 }, "bind": "use_cases", "parent": "form-root" },
+
+    { "id": "row-willingness-timeline", "component": "Row", "props": { "gap": 8, "maxColumns": 2 }, "parent": "form-root", "children": ["slider-willingness", "select-timeline"] },
+    { "id": "slider-willingness", "component": "Slider", "props": { "label": "Willingness to Pay ($/mo)", "min": 0, "max": 500, "step": 25 }, "bind": "willingness", "parent": "row-willingness-timeline" },
+    { "id": "select-timeline", "component": "Select", "props": { "label": "Desired Timeline", "options": [
+      { "label": "ASAP", "value": "asap" },
+      { "label": "Next quarter", "value": "quarter" },
+      { "label": "This year", "value": "year" },
+      { "label": "No rush", "value": "norush" }
+    ] }, "bind": "timeline", "parent": "row-willingness-timeline" },
+
+    { "id": "check-mockup", "component": "Checkbox", "props": { "label": "I have a mockup or screenshot to attach" }, "bind": "attach_mockup", "parent": "form-root" },
+    { "id": "file-mockup", "component": "FileInput", "props": { "label": "Upload Mockup", "accept": "image/*,.pdf" }, "parent": "form-root", "visible": { "when": "attach_mockup", "operator": "equals", "value": true } }
+  ]
+}

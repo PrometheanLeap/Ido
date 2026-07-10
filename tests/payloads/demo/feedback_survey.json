@@ -1,0 +1,70 @@
+{
+  "surface_type": "form",
+  "surface_title": "Customer Feedback Survey",
+  "context": "We'd love to hear about your experience. This takes ~2 minutes.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "overall_rating": { "type": "number", "title": "Overall Satisfaction" },
+      "ease_of_use": { "type": "number", "title": "Ease of Use" },
+      "would_recommend": { "type": "string", "title": "Would Recommend" },
+      "primary_use": { "type": "string", "title": "Primary Use Case" },
+      "frequency": { "type": "string", "title": "Usage Frequency" },
+      "best_feature": { "type": "string", "title": "Best Feature" },
+      "improvement": { "type": "string", "title": "What could be better?" },
+      "additional_comments": { "type": "string", "title": "Additional Comments" },
+      "follow_up": { "type": "boolean", "title": "Follow up" },
+      "contact_email": { "type": "string", "title": "Email" }
+    },
+    "required": ["overall_rating", "ease_of_use", "would_recommend"]
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Customer Feedback", "subtitle": "Your voice shapes our roadmap" }, "children": ["form-root"] },
+
+    { "id": "form-root", "component": "Form", "props": { "submitLabel": "Submit Feedback" }, "parent": "card", "children": ["rating-overall", "rating-ease", "choice-recommend", "divider1", "row-use-freq", "choice-best", "field-improvement", "field-comments", "divider2", "check-followup", "field-email"] },
+
+    { "id": "rating-overall", "component": "Rating", "props": { "label": "How satisfied are you overall?", "max": 5, "required": true }, "bind": "overall_rating", "parent": "form-root" },
+    { "id": "rating-ease", "component": "Rating", "props": { "label": "How easy was it to use?", "max": 5, "required": true }, "bind": "ease_of_use", "parent": "form-root" },
+
+    { "id": "choice-recommend", "component": "ChoicePicker", "props": { "label": "Would you recommend Ido to a colleague?", "options": [
+      { "label": "Definitely", "value": "10" },
+      { "label": "Probably", "value": "8" },
+      { "label": "Maybe", "value": "5" },
+      { "label": "No", "value": "0" }
+    ], "variant": "chips", "required": true }, "bind": "would_recommend", "parent": "form-root" },
+
+    { "id": "divider1", "component": "Divider", "props": { "label": "About Your Usage" }, "parent": "form-root" },
+
+    { "id": "row-use-freq", "component": "Row", "props": { "gap": 8, "maxColumns": 2 }, "parent": "form-root", "children": ["select-use", "select-freq"] },
+    { "id": "select-use", "component": "Select", "props": { "label": "Primary Use Case", "options": [
+      { "label": "Approvals & workflows", "value": "approvals" },
+      { "label": "Form collection", "value": "forms" },
+      { "label": "Notifications & alerts", "value": "notifications" },
+      { "label": "Agent-human handoff", "value": "handoff" },
+      { "label": "Other", "value": "other" }
+    ] }, "bind": "primary_use", "parent": "row-use-freq" },
+    { "id": "select-freq", "component": "Select", "props": { "label": "How often do you use Ido?", "options": [
+      { "label": "Multiple times a day", "value": "daily" },
+      { "label": "A few times a week", "value": "weekly" },
+      { "label": "A few times a month", "value": "monthly" },
+      { "label": "Rarely", "value": "rarely" }
+    ] }, "bind": "frequency", "parent": "row-use-freq" },
+
+    { "id": "choice-best", "component": "ChoicePicker", "props": { "label": "What's the best feature? (pick all that apply)", "options": [
+      { "label": "Real-time push", "value": "push" },
+      { "label": "Mobile PWA", "value": "pwa" },
+      { "label": "A2A / MCP support", "value": "protocols" },
+      { "label": "Dashboard UX", "value": "ux" },
+      { "label": "Multi-tenant", "value": "multitenant" },
+      { "label": "Self-hosted", "value": "selfhost" }
+    ], "variant": "checkbox" }, "bind": "best_feature", "parent": "form-root" },
+
+    { "id": "field-improvement", "component": "TextField", "props": { "label": "What could we improve?", "placeholder": "Be honest — we can take it...", "rows": 3 }, "bind": "improvement", "parent": "form-root" },
+    { "id": "field-comments", "component": "TextField", "props": { "label": "Anything else?", "placeholder": "Additional comments, feature requests, etc.", "rows": 2 }, "bind": "additional_comments", "parent": "form-root" },
+
+    { "id": "divider2", "component": "Divider", "props": { "label": "Follow Up (Optional)" }, "parent": "form-root" },
+
+    { "id": "check-followup", "component": "Checkbox", "props": { "label": "I'm open to a 15-minute follow-up call" }, "bind": "follow_up", "parent": "form-root" },
+    { "id": "field-email", "component": "InputField", "props": { "label": "Email", "type": "email", "placeholder": "you@example.com" }, "bind": "contact_email", "parent": "form-root", "visible": { "when": "follow_up", "operator": "equals", "value": true } }
+  ]
+}

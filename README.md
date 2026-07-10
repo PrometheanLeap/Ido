@@ -42,7 +42,7 @@ Ido is the **human-in-the-loop terminal** that sits between any AI system and an
 
 ```bash
 # Clone and install
-git clone https://github.com/aherbert-pl/Ido.git && cd Ido
+git clone https://github.com/prometheanleap/ido.git && cd ido
 cd proxy && npm install && cd ../ido-web && npm install && cd ..
 
 # Configure

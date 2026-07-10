@@ -6,7 +6,7 @@ Thank you for your interest in contributing to Ido! This document covers the dev
 
 ```bash
 # Clone
-git clone https://github.com/aherbert-pl/Ido.git && cd Ido
+git clone https://github.com/prometheanleap/ido.git && cd ido
 
 # Install dependencies
 cd proxy && npm install && cd ../ido-web && npm install && cd ..
@@ -92,7 +92,7 @@ Use Conventional Commits prefixes:
 
 ## Reporting bugs
 
-Open a [GitHub Issue](https://github.com/aherbert-pl/Ido/issues) with:
+Open a [GitHub Issue](https://github.com/prometheanleap/ido/issues) with:
 - Ido version (`curl http://localhost:8645/api/v1/health`)
 - Deployment mode (`IDO_MODE`)
 - Steps to reproduce

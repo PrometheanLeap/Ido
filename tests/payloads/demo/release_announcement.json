@@ -30,7 +30,7 @@
     { "id": "divider4", "component": "Divider", "props": {}, "parent": "card" },
 
     { "id": "action-links", "component": "Row", "props": { "gap": 12 }, "parent": "card", "children": ["link-release", "link-docs"] },
-    { "id": "link-release", "component": "Link", "props": { "text": "Download v2.4.0", "href": "https://github.com/aherbert-pl/Ido/releases/tag/v2.4.0", "target": "_blank" }, "parent": "action-links" },
-    { "id": "link-docs", "component": "Link", "props": { "text": "Migration guide", "href": "https://github.com/aherbert-pl/Ido/blob/main/CHANGELOG.md", "target": "_blank" }, "parent": "action-links" }
+    { "id": "link-release", "component": "Link", "props": { "text": "Download v2.4.0", "href": "https://github.com/prometheanleap/ido/releases/tag/v2.4.0", "target": "_blank" }, "parent": "action-links" },
+    { "id": "link-docs", "component": "Link", "props": { "text": "Migration guide", "href": "https://github.com/prometheanleap/ido/blob/main/CHANGELOG.md", "target": "_blank" }, "parent": "action-links" }
   ]
 }

@@ -72,17 +72,17 @@ app.use('/api/*', bodyLimit({
   onError: (c) => c.json({ error: 'Request body too large (max 1MB)' }, 413),
 }));
 
-// Rate limiting on the agent-facing protocol endpoints. These multiplex reads
-// and writes, so we use the higher ceiling as a DoS guard (default 600/min).
-app.use('/api/v1/a2a', rateLimit(config.rateLimitReads));
-app.use('/api/v1/mcp', rateLimit(config.rateLimitReads));
-app.use('/api/v1/surfaces/*', rateLimit(config.rateLimitReads));
+// Rate limiting on agent-facing protocol endpoints (default 600/min).
+// The REST /api/v1/surfaces endpoint is primarily the PWA talking to itself
+// and is intentionally not rate-limited — the A2A/MCP paths are the DoS surface.
+app.use('/api/v1/a2a', rateLimit(config.rateLimitReads, 'a2a'));
+app.use('/api/v1/mcp', rateLimit(config.rateLimitReads, 'mcp'));
 
 // Stricter rate limiting on auth routes to prevent brute-force attacks
 // on login, setup, and OIDC callbacks (default 20/min).
-app.use('/api/v1/login', rateLimit(config.rateLimitAuth));
-app.use('/api/v1/setup', rateLimit(config.rateLimitAuth));
-app.use('/api/v1/oidc/*', rateLimit(config.rateLimitAuth));
+app.use('/api/v1/login', rateLimit(config.rateLimitAuth, 'login'));
+app.use('/api/v1/setup', rateLimit(config.rateLimitAuth, 'setup'));
+app.use('/api/v1/oidc/*', rateLimit(config.rateLimitAuth, 'oidc'));
 
 app.get('/api/v1/health', (c) => c.json({
   status: 'ok', mode: config.mode, version: getVersion(),

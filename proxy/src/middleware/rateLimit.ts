@@ -30,11 +30,12 @@ function clientKey(c: Context): string {
 
 /**
  * Rate-limit middleware. `limit` is the max requests per minute for this route
- * group. Returns 429 with a Retry-After header when exceeded.
+ * group, and `label` distinguishes separate groups so they don't share buckets.
+ * Returns 429 with a Retry-After header when exceeded.
  */
-export function rateLimit(limit: number) {
+export function rateLimit(limit: number, label: string) {
   return async (c: Context, next: Next) => {
-    const key = `${clientKey(c)}:${limit}`;
+    const key = `${clientKey(c)}:${label}`;
     const now = Date.now();
     let w = buckets.get(key);
     if (!w || w.resetAt <= now) {

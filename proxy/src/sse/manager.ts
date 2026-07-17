@@ -44,6 +44,7 @@ class SSEManager {
   }
 
   removeClient(clientId: string): void {
+    console.log('[SSE] removeClient id=' + clientId.slice(0,8) + ' remaining=' + (this.clients.size - 1));
     this.clients.delete(clientId);
   }
 
@@ -106,7 +107,8 @@ class SSEManager {
     for (const client of this.clients.values()) {
       try {
         client.controller.enqueue(client.encoder.encode(': keepalive\n\n'));
-      } catch {
+      } catch (e) {
+        console.warn('[SSE] keepalive failed for client ' + client.id.slice(0,8) + ': ' + (e instanceof Error ? e.message : String(e)));
         this.removeClient(client.id);
       }
     }

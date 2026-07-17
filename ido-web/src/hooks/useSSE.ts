@@ -10,6 +10,7 @@ export function useSSE() {
   const unmountedRef = useRef(false);
 
   const connect = useCallback(() => {
+    console.warn('[SSE] connect() called. existingEventSource=' + !!eventSourceRef.current + ' readyState=' + (eventSourceRef.current?.readyState ?? 'none') + ' time=' + new Date().toISOString());
     if (unmountedRef.current) return;
     // Clear any pending reconnect timer (e.g. from a previous onerror)
     if (reconnectTimerRef.current) {
@@ -22,10 +23,14 @@ export function useSSE() {
       eventSourceRef.current = null;
     }
 
-    const es = new EventSource('/sse', { withCredentials: true });
+    // In dev, bypass the Vite proxy for SSE — it buffers the stream and delays
+    // onopen by seconds. In production, /sse is served by the same origin.
+    const sseUrl = import.meta.env.DEV ? 'http://localhost:8645/sse' : '/sse';
+    const es = new EventSource(sseUrl, { withCredentials: true });
     eventSourceRef.current = es;
 
     es.onopen = () => {
+      console.warn('[SSE] onopen fired. time=' + new Date().toISOString());
       reconnectAttemptRef.current = 0;
       setSseConnected(true);
     };
@@ -69,6 +74,9 @@ export function useSSE() {
 
     es.onerror = () => {
       if (unmountedRef.current) return;
+      // Diagnostic: log why the EventSource errored
+      const state = es.readyState; // 0=CONNECTING, 1=OPEN, 2=CLOSED
+      console.warn('[SSE] onerror fired. readyState=' + state + ' attempt=' + reconnectAttemptRef.current + ' time=' + new Date().toISOString());
       setSseConnected(false);
       es.close();
       if (eventSourceRef.current === es) {
@@ -87,6 +95,7 @@ export function useSSE() {
   }, [addOrUpdateSurface, removeSurface, setSseConnected]);
 
   useEffect(() => {
+    console.warn('[SSE] useEffect running. isAuthenticated=' + isAuthenticated + ' time=' + new Date().toISOString());
     unmountedRef.current = false;
 
     if (!isAuthenticated) return;
@@ -94,16 +103,21 @@ export function useSSE() {
     connect();
 
     // Reconnect when the tab becomes visible again (browsers throttle hidden SSE)
+    // Only reconnect if the EventSource is not already open — avoid unnecessary
+    // disconnect/reconnect cycles that show as "Reconnecting" in the UI.
     const onVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
-        // Reset backoff and reconnect fresh
-        reconnectAttemptRef.current = 0;
-        connect();
+        const es = eventSourceRef.current;
+        if (!es || es.readyState === EventSource.CLOSED) {
+          reconnectAttemptRef.current = 0;
+          connect();
+        }
       }
     };
     document.addEventListener('visibilitychange', onVisibilityChange);
 
     return () => {
+      console.warn('[SSE] useEffect cleanup. time=' + new Date().toISOString());
       unmountedRef.current = true;
       document.removeEventListener('visibilitychange', onVisibilityChange);
       if (eventSourceRef.current) {

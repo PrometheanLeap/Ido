@@ -17,7 +17,6 @@ async function request<T>(
   path: string,
   options: RequestInit = {},
 ): Promise<T> {
-  console.trace('[Ido API]', options.method || 'GET', path);
   const res = await fetch(`${BASE}${path}`, {
     credentials: 'include',
     headers: {

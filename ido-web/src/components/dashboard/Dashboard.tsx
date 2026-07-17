@@ -94,7 +94,6 @@ export function Dashboard() {
 
   // Open a surface — lazily fetch the full record if we only have the summary
   const openSurface = async (surface: any) => {
-    console.trace('[Ido] openSurface called for', surface.surface_id, surface.title);
     if (surface.components_json != null) {
       setSelectedSurface(surface);
       return;

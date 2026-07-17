@@ -279,16 +279,17 @@ app.route('/api/v1/preferences', preferencesRouter);
 app.get('/sse', extractAuth, requireTenant, async (c) => {
   const tenantId = c.get('tenantId') as string;
   const userId = c.get('userId') as string | undefined;
-  const surfaces = await queries.getSurfaceSummariesByTenant(getDb(), tenantId, undefined, config.mode === 'corporate' ? userId : undefined);
   let clientId: string | null = null;
   const stream = new ReadableStream({
     start(controller) {
       clientId = uuid();
       sseManager.addClient(clientId, tenantId, userId, controller);
+      // Send an initial "hello" event so the browser fires onopen immediately.
+      // Initial surface data is fetched via REST (/api/v1/surfaces) — sending 170+
+      // surface events in the SSE stream blocks onopen and causes the "Reconnecting"
+      // badge to show for seconds.
       const encoder = new TextEncoder();
-      for (const surface of surfaces) {
-        controller.enqueue(encoder.encode('event: surface_update\ndata: ' + JSON.stringify(buildSurfaceUpdateEvent(surface)) + '\n\n'));
-      }
+      controller.enqueue(encoder.encode(': connected\n\n'));
     },
     cancel() { if (clientId) sseManager.removeClient(clientId); },
   });

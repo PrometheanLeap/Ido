@@ -1,6 +1,7 @@
 import { useState, useEffect, Fragment, useRef, useCallback } from 'react';
 import type React from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import type { Surface } from '../../stores/useStore';
 import { api } from '../../services/api';
 import { useStore } from '../../stores/useStore';
@@ -822,8 +823,35 @@ function ComponentRenderer({
 
     case 'RichText':
       return (
-        <div className="prose prose-sm dark:prose-invert max-w-none text-body">
-          <ReactMarkdown>{props?.markdown || ''}</ReactMarkdown>
+        <div className="w-full overflow-x-auto text-body">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              table: ({ children }) => (
+                <table className="w-full text-body my-4">{children}</table>
+              ),
+              thead: ({ children }) => (
+                <thead>{children}</thead>
+              ),
+              tbody: ({ children }) => (
+                <tbody>{children}</tbody>
+              ),
+              tr: ({ children }) => (
+                <tr className="border-b border-border">{children}</tr>
+              ),
+              th: ({ children }) => (
+                <th className="text-left py-3 px-4 text-label font-medium text-secondary">{children}</th>
+              ),
+              td: ({ children }) => (
+                <td className="py-3 px-4">{children}</td>
+              ),
+              hr: () => (
+                <hr className="my-6 border-border" />
+              ),
+            }}
+          >
+            {props?.markdown || ''}
+          </ReactMarkdown>
         </div>
       );
 

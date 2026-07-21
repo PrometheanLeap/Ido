@@ -12,3 +12,5 @@ deploy.env
 .vite/
 memories/
 *.tsbuildinfo
+TODO.md
+CHANGELOG.md

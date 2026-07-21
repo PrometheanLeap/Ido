@@ -1,7 +1,7 @@
 import type { Kysely } from 'kysely';
 import type { DB } from '../db/adapter.js';
 import type { A2UIComponent } from '../a2ui/schema.js';
-import { createSurface, submitSurface, broadcastSurfaceCreated, DomainError } from '../domain/surfaces.js';
+import { createSurface, submitSurface, cancelSurface, broadcastSurfaceCreated, DomainError } from '../domain/surfaces.js';
 import { getTask, listTasks } from '../domain/tasks.js';
 import { getSkillsGuide } from '../a2a/skills-guide.js';
 import * as queries from '../db/queries.js';
@@ -77,7 +77,7 @@ const MCP_TOOLS = [
   },
   {
     name: 'ido_answer_task',
-    description: 'Submit a response to a pending surface (agent-as-human pattern).',
+    description: 'Submit a response to a pending surface (agent-as-human pattern). For approvals, include decision. For forms, include user_input matching the expected schema.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -86,6 +86,17 @@ const MCP_TOOLS = [
         decision: { type: 'string', enum: ['approved', 'rejected'] },
       },
       required: ['task_id', 'user_input'],
+    },
+  },
+  {
+    name: 'ido_cancel_task',
+    description: 'Cancel a pending task. Works on any surface type (form, approval, notification). No user_input or decision required — this withdraws the task, not submits it. The surface transitions to CANCELLED and the human can no longer respond.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        task_id: { type: 'string' },
+      },
+      required: ['task_id'],
     },
   },
 ];
@@ -196,6 +207,10 @@ async function handleToolCall(
 
       case 'ido_answer_task':
         result = await handleMcpAnswerTask(db, toolArgs, tenantId);
+        break;
+
+      case 'ido_cancel_task':
+        result = await handleMcpCancelTask(db, toolArgs, tenantId);
         break;
 
       default:
@@ -362,6 +377,23 @@ async function handleMcpAnswerTask(
 
   return {
     content: [{ type: 'text', text: JSON.stringify({ status: result.state, surface_id: result.surfaceId }) }],
+  };
+}
+
+async function handleMcpCancelTask(
+  db: Kysely<DB>,
+  args: Record<string, unknown>,
+  tenantId: string,
+): Promise<McpToolResult> {
+  const taskId = args.task_id as string;
+
+  const task = await getTask(db, taskId, tenantId);
+  const result = await cancelSurface(db, task.surface_id, tenantId, 'agent');
+
+  sseManager.pushSurfaceResolved(tenantId, task.surface_id, 'CANCELLED');
+
+  return {
+    content: [{ type: 'text', text: JSON.stringify({ status: 'CANCELLED', surface_id: result.surfaceId }) }],
   };
 }
 

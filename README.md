@@ -174,6 +174,18 @@ curl -X POST http://localhost:8645/api/v1/a2a \
 
 ### MCP (Model Context Protocol)
 
+Available tools (call `tools/list` for the full schema):
+
+| Tool | Description |
+|---|---|
+| `ido_get_skills_guide` | Full component catalog, templates, and validation rules |
+| `ido_send_task` | Create a surface (form/approval/notification) |
+| `ido_check_task` | Poll task status and result |
+| `ido_list_tasks` | List tasks for this API key |
+| `ido_read_task` | Read full surface details |
+| `ido_answer_task` | Submit a response (agent-as-human) |
+| `ido_cancel_task` | Cancel a pending task — works on any surface type, no fields required |
+
 ```bash
 curl -X POST http://localhost:8645/api/v1/mcp \
   -H "Content-Type: application/json" \

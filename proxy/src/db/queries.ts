@@ -87,6 +87,7 @@ export async function getSurfacesByTenant(
   tenantId: string,
   state?: SurfaceState,
   userId?: string,
+  excludeExpired?: boolean,
 ) {
   let query = db.selectFrom('a2ui_surfaces')
     .where('tenant_id', '=', tenantId);
@@ -103,6 +104,13 @@ export async function getSurfacesByTenant(
     ]));
   }
 
+  if (excludeExpired) {
+    query = query.where((eb) => eb.or([
+      eb('expires_at', 'is', null),
+      eb('expires_at', '>', new Date().toISOString()),
+    ]));
+  }
+
   return query.orderBy('created_at', 'desc').selectAll().execute();
 }
 
@@ -114,6 +122,7 @@ export async function getSurfaceSummariesByTenant(
   tenantId: string,
   state?: SurfaceState,
   userId?: string,
+  excludeExpired?: boolean,
 ) {
   let query = db.selectFrom('a2ui_surfaces')
     .where('tenant_id', '=', tenantId);
@@ -127,6 +136,13 @@ export async function getSurfaceSummariesByTenant(
     query = query.where((eb) => eb.or([
       eb('user_id', '=', userId),
       eb('user_id', 'is', null),
+    ]));
+  }
+
+  if (excludeExpired) {
+    query = query.where((eb) => eb.or([
+      eb('expires_at', 'is', null),
+      eb('expires_at', '>', new Date().toISOString()),
     ]));
   }
 

@@ -29,7 +29,7 @@ export function SurfaceView({ surface, onClose, initialDecision }: SurfaceViewPr
   const [remainingMs, setRemainingMs] = useState<number | null>(
     surface.expires_at ? new Date(surface.expires_at).getTime() - Date.now() : null,
   );
-  const { removeSurface, setSurfaces } = useStore();
+  const { setSurfaces } = useStore();
 
   // Dismiss / decline handlers (defined before swipe so touch handlers can call them)
   const handleDismiss = useCallback(async () => {
@@ -101,7 +101,12 @@ export function SurfaceView({ surface, onClose, initialDecision }: SurfaceViewPr
     }
   }, [error]);
 
-  // Countdown timer — update every 30s, auto-close on expiry
+  // Countdown timer — update every 30s, auto-dismiss on expiry.
+  // Uses a ref to call handleDismiss so the timer effect doesn't need
+  // handleDismiss in its dependency array (avoids restarting the interval).
+  const handleDismissRef = useRef(handleDismiss);
+  handleDismissRef.current = handleDismiss;
+
   useEffect(() => {
     if (!surface.expires_at) return;
     const terminalStates = ['COMPLETED', 'REJECTED', 'CANCELLED', 'EXPIRED', 'DISMISSED'];
@@ -111,8 +116,9 @@ export function SurfaceView({ surface, onClose, initialDecision }: SurfaceViewPr
       const left = new Date(surface.expires_at!).getTime() - Date.now();
       if (left <= 0) {
         setRemainingMs(0);
-        removeSurface(surface.surface_id);
-        onClose();
+        // Dismiss server-side so the surface is marked terminal and won't
+        // reappear on the next refetch (before the expiry sweep runs).
+        handleDismissRef.current();
         return;
       }
       setRemainingMs(left);

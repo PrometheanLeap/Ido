@@ -19,15 +19,17 @@ export function createSurfacesRouter(getDb: () => Kysely<DB>): Hono<{ Variables:
 
   // GET /api/v1/surfaces — lightweight summaries for the card list.
   // Heavy JSON blobs are fetched on demand via GET /:id when a surface opens.
+  // ?exclude_expired=true filters out surfaces whose expires_at is in the past.
   router.get('/', async (c) => {
     const tenantId = c.get('tenantId');
     const userId = c.get('userId') as string | undefined;
     const stateRaw = c.req.query('state');
     const state = stateRaw && VALID_STATES.has(stateRaw) ? stateRaw as typeof SurfaceStateEnum._type : undefined;
     const full = c.req.query('full') === 'true';
+    const excludeExpired = c.req.query('exclude_expired') === 'true';
     const surfaces = full
-      ? await queries.getSurfacesByTenant(getDb(), tenantId, state, config.mode === 'corporate' ? userId : undefined)
-      : await queries.getSurfaceSummariesByTenant(getDb(), tenantId, state, config.mode === 'corporate' ? userId : undefined);
+      ? await queries.getSurfacesByTenant(getDb(), tenantId, state, config.mode === 'corporate' ? userId : undefined, excludeExpired)
+      : await queries.getSurfaceSummariesByTenant(getDb(), tenantId, state, config.mode === 'corporate' ? userId : undefined, excludeExpired);
     return c.json(surfaces);
   });
 

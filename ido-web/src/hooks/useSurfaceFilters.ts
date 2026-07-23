@@ -14,12 +14,16 @@ export function useSurfaceFilters(
   showArchived: boolean,
   searchQuery: string,
 ) {
-  // Inbox: non-archived, non-dismissed. Dismissed notifications go to history.
+  // Inbox: non-archived, non-dismissed, and not past expiry.
+  // Also checks expires_at (not just state) because the backend expiry sweep
+  // runs periodically — a surface past its expires_at may still have state
+  // INPUT_REQUIRED until the sweep fires.
   const inboxSurfaces = useMemo(
     () =>
       surfaces.filter((s) => {
         if (s.archived) return false;
         if (s.type === 'notification') return s.state !== 'DISMISSED';
+        if (s.expires_at && new Date(s.expires_at).getTime() <= Date.now()) return false;
         return !TERMINAL_STATES.includes(s.state);
       }),
     [surfaces],

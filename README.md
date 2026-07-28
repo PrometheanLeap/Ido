@@ -6,6 +6,8 @@
 
 Any AI agent, any protocol, can request a human decision and get a typed, validated response back — on any device, in any deployment model.
 
+**[prometheanleap.com](https://prometheanleap.com/)**
+
 [![License: BUSL 1.1](https://img.shields.io/badge/License-BUSL%201.1-blue.svg)](LICENSE)
 [![CI](https://github.com/prometheanleap/ido/actions/workflows/ci.yml/badge.svg)](https://github.com/prometheanleap/ido/actions/workflows/ci.yml)
 [![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=node.js&logoColor=white)](https://nodejs.org)
@@ -112,7 +114,7 @@ Ido is source-available, not open source — and that's intentional. Here's why:
 
 BUSL protects the project from cloud vendors offering Ido as a managed service without contributing back, while remaining free for the overwhelming majority of individual users and teams evaluating it. On the change date, it converts to MIT — permanently open source. This is the same model used by [Sentry](https://blog.sentry.io/why-we-license/), [CockroachDB](https://www.cockroachlabs.com/blog/oss-relicensing-cockroachdb/), and [MariaDB](https://mariadb.com/bsl-faq/).
 
-For commercial licensing, contact the Licensor.
+For commercial licensing: contact@prometheanleap.com
 
 ---
 

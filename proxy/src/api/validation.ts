@@ -9,7 +9,10 @@ export const MessageSendSchema = z.object({
   context: z.string().max(2000).refine((s) => !s.includes('\x00'), 'Context must not contain null bytes').optional(),
   // Format is not enforced here — validateUserId() applies the mode-specific
   // rule (corporate mode requires an email; other modes accept any identifier).
-  user_id: z.string().min(1).max(320).refine((s) => !s.includes('\x00'), 'user_id must not contain null bytes').optional(),
+  user_id: z.preprocess(
+    (v) => (typeof v === 'string' && v.trim() === '' ? undefined : v),
+    z.string().min(1).max(320).refine((s) => !s.includes('\x00'), 'user_id must not contain null bytes').optional(),
+  ),
   severity: SeverityEnum.optional(),
   inputs_schema: z.object({
     type: z.literal('object').optional(),
@@ -18,7 +21,10 @@ export const MessageSendSchema = z.object({
   }).optional(),
   a2ui_layout: z.array(z.record(z.unknown())).optional(),
   initial_data_model: z.record(z.unknown()).optional(),
-  expires_at: z.string().datetime().optional(),
+  expires_at: z.preprocess(
+    (v) => (typeof v === 'string' && v.trim() === '' ? undefined : v),
+    z.string().datetime().optional(),
+  ),
   idempotency_key: z.string().max(128).optional(),
   configuration: ConfigurationSchema.optional(),
   action_validation: z.object({

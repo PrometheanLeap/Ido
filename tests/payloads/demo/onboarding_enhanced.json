@@ -1,0 +1,47 @@
+{
+  "surface_type": "form",
+  "surface_title": "New Employee Onboarding",
+  "context": "Welcome to the team! Please complete your onboarding details below.",
+  "inputs_schema": {
+    "type": "object",
+    "properties": {
+      "full_name": { "type": "string", "title": "Full Name" },
+      "email": { "type": "string", "title": "Email Address" },
+      "department": { "type": "string", "title": "Department", "enum": ["Engineering", "Design", "Product", "Sales", "Marketing"] },
+      "start_date": { "type": "string", "title": "Start Date" },
+      "device_choice": { "type": "string", "title": "Device Choice" },
+      "shirt_size": { "type": "string", "title": "Shirt Size", "enum": ["XS", "S", "M", "L", "XL", "XXL"] },
+      "remote_work": { "type": "boolean", "title": "Remote Work" },
+      "parking_pass": { "type": "boolean", "title": "Parking Pass" },
+      "dietary_notes": { "type": "string", "title": "Dietary Notes" }
+    },
+    "required": ["full_name", "email", "department", "start_date", "device_choice"]
+  },
+  "a2ui_layout": [
+    { "id": "card", "component": "Card", "props": { "title": "Employee Onboarding", "subtitle": "Welcome to the team!" }, "children": ["welcome-text", "divider1", "form-root"] },
+
+    { "id": "welcome-text", "component": "RichText", "props": { "markdown": "We're thrilled to have you join us! Please fill out the details below so we can get your workspace, equipment, and access ready before your first day.\n\n**Reporting Manager:** Sarah Chen, VP of Engineering" }, "parent": "card" },
+
+    { "id": "divider1", "component": "Divider", "props": { "label": "Your Details" }, "parent": "card" },
+
+    { "id": "form-root", "component": "Form", "props": { "submitLabel": "Complete Onboarding" }, "parent": "card", "children": ["field-name", "field-email", "field-dept", "field-date", "divider2", "device-section", "divider3", "field-shirt", "field-remote", "field-parking", "field-dietary"] },
+
+    { "id": "field-name", "component": "InputField", "props": { "label": "Full Name", "type": "text", "placeholder": "Jane Cooper" }, "bind": "full_name", "parent": "form-root" },
+    { "id": "field-email", "component": "InputField", "props": { "label": "Email Address", "type": "email", "placeholder": "jane@company.com" }, "bind": "email", "parent": "form-root" },
+    { "id": "field-dept", "component": "Select", "props": { "label": "Department", "options": [{ "label": "Engineering", "value": "Engineering" }, { "label": "Design", "value": "Design" }, { "label": "Product", "value": "Product" }, { "label": "Sales", "value": "Sales" }, { "label": "Marketing", "value": "Marketing" }] }, "bind": "department", "parent": "form-root" },
+    { "id": "field-date", "component": "DatePicker", "props": { "label": "Start Date" }, "bind": "start_date", "parent": "form-root" },
+
+    { "id": "divider2", "component": "Divider", "props": { "label": "Equipment" }, "parent": "form-root" },
+
+    { "id": "device-section", "component": "Column", "props": { "gap": 8 }, "parent": "form-root", "children": ["device-label", "device-grid"] },
+    { "id": "device-label", "component": "Text", "props": { "text": "Choose your laptop:", "usageHint": "label" }, "parent": "device-section" },
+    { "id": "device-grid", "component": "ImageSelect", "props": { "items": [{ "src": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=200&fit=crop", "value": "macbook", "label": "MacBook Pro 14\"" }, { "src": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&h=200&fit=crop", "value": "thinkpad", "label": "ThinkPad X1" }], "mode": "single", "columns": 2 }, "bind": "device_choice", "parent": "device-section" },
+
+    { "id": "divider3", "component": "Divider", "props": { "label": "Preferences" }, "parent": "form-root" },
+
+    { "id": "field-shirt", "component": "ChoicePicker", "props": { "label": "Shirt Size (for company swag)", "options": [{ "label": "XS", "value": "XS" }, { "label": "S", "value": "S" }, { "label": "M", "value": "M" }, { "label": "L", "value": "L" }, { "label": "XL", "value": "XL" }, { "label": "XXL", "value": "XXL" }], "variant": "chips" }, "bind": "shirt_size", "parent": "form-root" },
+    { "id": "field-remote", "component": "Checkbox", "props": { "label": "I plan to work remotely" }, "bind": "remote_work", "parent": "form-root" },
+    { "id": "field-parking", "component": "Checkbox", "props": { "label": "I need a parking pass" }, "bind": "parking_pass", "parent": "form-root" },
+    { "id": "field-dietary", "component": "TextField", "props": { "label": "Dietary Restrictions (for welcome lunch)", "placeholder": "e.g. vegetarian, gluten-free, allergies...", "rows": 2 }, "bind": "dietary_notes", "parent": "form-root" }
+  ]
+}

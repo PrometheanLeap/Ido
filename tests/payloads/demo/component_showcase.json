@@ -48,7 +48,7 @@
     { "id": "link-github", "component": "Link", "props": { "text": "GitHub", "href": "https://github.com", "target": "_blank" }, "parent": "link-row" },
 
     { "id": "image-row", "component": "Row", "props": { "gap": 8 }, "parent": "divider1", "children": ["img-demo"] },
-    { "id": "img-demo", "component": "Image", "props": { "src": "https://placehold.co/300x150/3B5BDB/white?text=Ido+Placeholder", "alt": "Placeholder image", "fit": "cover", "radius": "md" }, "parent": "image-row" },
+    { "id": "img-demo", "component": "Image", "props": { "src": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=300&fit=crop", "alt": "Mountain landscape at sunrise with layers of ridges in mist", "fit": "cover", "radius": "md" }, "parent": "image-row" },
 
     { "id": "divider2", "component": "Divider", "props": { "label": "Data Components" }, "parent": "card", "children": ["table-demo", "datagrid-demo", "chart-row", "product-demo", "map-demo"] },
 
@@ -88,7 +88,7 @@
     { "id": "field-rating", "component": "Rating", "props": { "label": "Satisfaction", "max": 5 }, "bind": "satisfaction", "parent": "form-root" },
     { "id": "field-slider", "component": "Slider", "props": { "label": "Budget %", "min": 0, "max": 100, "step": 5 }, "bind": "budget_pct", "parent": "form-root" },
     { "id": "file-demo", "component": "FileInput", "props": { "label": "Attach Supporting Document", "accept": ".pdf,.doc,.docx" }, "parent": "form-root" },
-    { "id": "image-select", "component": "ImageSelect", "props": { "items": [{ "src": "https://placehold.co/200/3B5BDB/white?text=A", "value": "a", "label": "Option A" }, { "src": "https://placehold.co/200/10B981/white?text=B", "value": "b", "label": "Option B" }, { "src": "https://placehold.co/200/F59E0B/white?text=C", "value": "c", "label": "Option C" }], "mode": "single", "columns": 3 }, "bind": "image_choice", "parent": "form-root" },
+    { "id": "image-select", "component": "ImageSelect", "props": { "items": [{ "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&h=150&fit=crop", "value": "a", "label": "Analytics" }, { "src": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=150&fit=crop", "value": "b", "label": "Dashboard" }, { "src": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=200&h=150&fit=crop", "value": "c", "label": "Design" }], "mode": "single", "columns": 3 }, "bind": "image_choice", "parent": "form-root" },
     { "id": "field-signature", "component": "Signature", "props": { "label": "Sign here" }, "bind": "signature", "parent": "form-root" },
     { "id": "field-channels", "component": "ChoicePicker", "props": { "label": "Notify via (multi-select)", "options": [{ "label": "Email", "value": "email" }, { "label": "Slack", "value": "slack" }, { "label": "SMS", "value": "sms" }, { "label": "Teams", "value": "teams" }], "variant": "checkbox" }, "bind": "notify_channels", "parent": "form-root" },
     { "id": "field-has-budget", "component": "Checkbox", "props": { "label": "Has budget approval?" }, "bind": "has_budget", "parent": "form-root" },

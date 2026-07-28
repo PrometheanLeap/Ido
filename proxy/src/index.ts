@@ -60,7 +60,7 @@ app.use('*', secureHeaders({
 }));
 
 app.use('*', cors({
-  origin: config.mode === 'dev' ? '*' : config.corsOrigin,
+  origin: config.corsOrigin,
   credentials: true,
   allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization', 'X-Ido-Api-Key'],

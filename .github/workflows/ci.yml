@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [proxy, ido-web]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ${{ matrix.project }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ matrix.project }}
+        run: npm ci
+
+      - name: Type check
+        working-directory: ${{ matrix.project }}
+        run: npx tsc --noEmit
+
+  test:
+    name: API Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: proxy/package-lock.json
+
+      - name: Install proxy dependencies
+        working-directory: proxy
+        run: npm ci
+
+      - name: Start proxy in dev mode
+        working-directory: proxy
+        run: |
+          cp ../deploy.env.example ../.env
+          npx tsx src/index.ts &
+          sleep 5
+          curl --retry 10 --retry-delay 2 --retry-connrefused http://localhost:8645/api/v1/health
+
+      - name: Run test suite
+        run: bash scripts/ido-test.sh

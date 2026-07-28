@@ -31,7 +31,7 @@ Ido is the **human-in-the-loop terminal** that sits between any AI system and an
 
 ---
 
-<p align="center"><img src="Docs/images/component-showcase.gif" width="300" /></p>
+<p align="center"><img src="Docs/images/component-showcase.gif" width="600" /></p>
 
 ## Screenshots
 

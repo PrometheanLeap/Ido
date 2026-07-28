@@ -64,7 +64,7 @@ git clone https://github.com/prometheanleap/ido.git && cd ido
 cd proxy && npm install && cd ../ido-web && npm install && cd ..
 
 # Configure
-cp deploy.env.example .env
+cp .env.example.dev .env
 # Edit .env — set IDO_MODE, OIDC credentials, etc.
 # (dev mode works out-of-the-box with no changes)
 

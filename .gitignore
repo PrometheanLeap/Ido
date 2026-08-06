@@ -13,3 +13,4 @@ deploy.env
 memories/
 *.tsbuildinfo
 TODO.md
+ai_agent_decision_log*

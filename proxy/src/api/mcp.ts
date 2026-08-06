@@ -18,6 +18,34 @@ interface McpRequest {
   id: string | number | null;
 }
 
+const MCP_SUPPORTED_PROTOCOL_VERSIONS = ['2025-06-18', '2024-11-05'] as const;
+
+function getRequestedProtocolVersion(params: unknown): string | undefined {
+  if (!params || typeof params !== 'object' || Array.isArray(params)) return undefined;
+  const protocolVersion = (params as { protocolVersion?: unknown }).protocolVersion;
+  return typeof protocolVersion === 'string' ? protocolVersion : undefined;
+}
+
+export function resolveMcpProtocolVersion(params: unknown): string {
+  const requested = getRequestedProtocolVersion(params);
+  if (requested && MCP_SUPPORTED_PROTOCOL_VERSIONS.includes(requested as (typeof MCP_SUPPORTED_PROTOCOL_VERSIONS)[number])) {
+    return requested;
+  }
+  return MCP_SUPPORTED_PROTOCOL_VERSIONS[0];
+}
+
+export function buildMcpInitializeResult(id: string | number | null, params: unknown) {
+  return {
+    jsonrpc: '2.0' as const,
+    result: {
+      protocolVersion: resolveMcpProtocolVersion(params),
+      capabilities: { tools: { listChanged: false } },
+      serverInfo: { name: 'Ido', version: '2.0.0' },
+    },
+    id,
+  };
+}
+
 interface McpToolResult {
   content: Array<{ type: 'text'; text: string }>;
   isError?: boolean;
@@ -111,15 +139,7 @@ export async function dispatchMcp(
 ): Promise<unknown> {
   switch (request.method) {
     case 'initialize':
-      return {
-        jsonrpc: '2.0',
-        result: {
-          protocolVersion: '2024-11-05',
-          capabilities: { tools: { listChanged: false } },
-          serverInfo: { name: 'Ido', version: '2.0.0' },
-        },
-        id: request.id,
-      };
+      return buildMcpInitializeResult(request.id, request.params);
 
     case 'ping':
       return {

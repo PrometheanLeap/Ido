@@ -15,7 +15,7 @@ import { createPushRouter } from './api/push.js';
 import { createPreferencesRouter } from './api/preferences.js';
 import { rateLimit } from './middleware/rateLimit.js';
 import { dispatchJsonRpc, isJsonRpcRequest } from './api/a2a.js';
-import { dispatchMcp, handleMcpSseConnect, getMcpSession, sendMcpResponse, removeMcpSession } from './api/mcp.js';
+import { buildMcpInitializeResult, dispatchMcp, handleMcpSseConnect, getMcpSession, sendMcpResponse, removeMcpSession } from './api/mcp.js';
 import { getSkillsGuide } from './a2a/skills-guide.js';
 import { getComponentJsonSchema } from './a2ui/schema.js';
 import { sseManager } from './sse/manager.js';
@@ -202,23 +202,56 @@ app.post('/api/v1/a2a', extractAuth, async (c) => {
   return c.json(result);
 });
 
+function buildMcpInfoResponse(id: string | number | null = null) {
+  return buildMcpInitializeResult(id, {});
+}
+
+app.get('/api/v1/mcp', (c) => c.json(buildMcpInfoResponse(null), 200));
+
 app.post('/api/v1/mcp', extractAuth, async (c) => {
-  const body = await c.req.json();
+  const rawText = await c.req.text();
+  let body: unknown;
+  try {
+    body = JSON.parse(rawText);
+  } catch (err) {
+    console.error('MCP JSON parse error. Raw body length:', rawText.length, 'Body:', rawText.substring(0, 300));
+    return c.json(buildMcpInfoResponse(null), 200);
+  }
+
+  if (typeof body !== 'object' || body === null || Array.isArray(body)) {
+    return c.json(buildMcpInfoResponse(null), 200);
+  }
+
+  const payload = body as { method?: unknown; params?: unknown; id?: unknown };
+  const method = typeof payload.method === 'string' ? payload.method : '';
+  if (!method) {
+    return c.json(buildMcpInfoResponse(typeof payload.id === 'string' || typeof payload.id === 'number' || payload.id === null ? payload.id : null), 200);
+  }
+
+  const params = typeof payload.params === 'object' && payload.params !== null && !Array.isArray(payload.params)
+    ? payload.params as Record<string, unknown>
+    : {};
+  const toolName = typeof params.name === 'string' ? params.name : '';
+  const request = {
+    jsonrpc: '2.0' as const,
+    method,
+    params,
+    id: typeof payload.id === 'string' || typeof payload.id === 'number' || payload.id === null ? payload.id : null,
+  };
+
   // initialize and ping are intentionally public (no auth required per MCP spec)
   // ido_get_skills_guide is also public
-  const method = body.method || '';
-  const toolName = body.params?.name || '';
   const isPublic = method === 'initialize' || method === 'ping' || method === 'tools/list'
     || (method === 'tools/call' && toolName === 'ido_get_skills_guide');
   const tenantId = c.get('tenantId') as string;
   if (!isPublic && !tenantId) {
-    return c.json({ jsonrpc: '2.0', error: { code: -32001, message: 'Authentication required — provide a valid X-Ido-Api-Key header' }, id: body.id ?? null });
+    return c.json({ jsonrpc: '2.0', error: { code: -32001, message: 'Authentication required — provide a valid X-Ido-Api-Key header or session cookie' }, id: request.id }, 401);
   }
   const effectiveTenant = tenantId || 'public';
   if (!isPublic) {
     await queries.ensureTenant(getDb(), effectiveTenant, 'Tenant ' + effectiveTenant, config.mode);
   }
-  const result = await dispatchMcp(getDb(), body, effectiveTenant,
+  const result = await dispatchMcp(getDb(), request, effectiveTenant,
     c.get('source') as string || 'mcp');
   return c.json(result);
 });
@@ -242,8 +275,11 @@ app.get('/api/v1/mcp/sse', extractAuth, requireTenant, async (c) => {
 });
 
 // MCP SSE — session-specific POST endpoint for sending requests
-app.post('/api/v1/mcp/sse/:sessionId', async (c) => {
+app.post('/api/v1/mcp/sse/:sessionId', extractAuth, requireTenant, async (c) => {
   const sessionId = c.req.param('sessionId');
+  if (!sessionId) {
+    return c.json({ jsonrpc: '2.0', error: { code: -32001, message: 'Session not found' }, id: null });
+  }
   const session = getMcpSession(sessionId);
   if (!session) return c.json({ jsonrpc: '2.0', error: { code: -32001, message: 'Session not found' }, id: null });
   const body = await c.req.json();
